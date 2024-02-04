@@ -1,5 +1,7 @@
 package com.example.appgestiondeprojet.config;
 
+import com.example.appgestiondeprojet.jwt.AuthEntryPointJwt;
+import com.example.appgestiondeprojet.jwt.AuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.example.appgestiondeprojet.jwt.AuthEntryPointJwt;
-import com.example.appgestiondeprojet.jwt.AuthTokenFilter;
 import com.example.appgestiondeprojet.services.UserDetailsServiceImpl;
 @Configuration
 @EnableWebSecurity
@@ -63,8 +63,9 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").permitAll()
+                        auth.requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
+                                .requestMatchers("/error").permitAll()
                                 .anyRequest().authenticated()
                 );
 

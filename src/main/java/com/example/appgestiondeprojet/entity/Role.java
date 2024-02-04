@@ -22,4 +22,7 @@ public class Role  {
     private ERole name;
 
 
+    public Role(ERole name) {
+        this.name = name;
+    }
 }

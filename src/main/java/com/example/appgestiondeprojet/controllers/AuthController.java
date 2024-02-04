@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import com.example.appgestiondeprojet.entity.ERole;
 import com.example.appgestiondeprojet.entity.Role;
 import com.example.appgestiondeprojet.entity.User;
-import com.example.appgestiondeprojet.jwt.JwtUtils;
 import com.example.appgestiondeprojet.payload.request.LoginRequest;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
 import com.example.appgestiondeprojet.payload.response.MessageResponse;
@@ -23,7 +22,7 @@ import com.example.appgestiondeprojet.payload.response.UserInfoResponse;
 import com.example.appgestiondeprojet.repository.RoleRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
 import com.example.appgestiondeprojet.services.UserDetailsImpl;
-
+import com.example.appgestiondeprojet.jwt.JwtUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +33,7 @@ import java.util.stream.Collectors;
 //@CrossOrigin(origins = "http://localhost:8081", maxAge = 3600, allowCredentials="true")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
   @Autowired
@@ -68,16 +67,19 @@ public class AuthController {
 
     ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
-    List<String> roles = userDetails.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority) // use method reference instead of lambda
-            .collect(Collectors.toList());
+    String roles = userDetails.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .findFirst()
+            .orElse(null);
 
+    String jwt = jwtUtils.generateTokenFromUsername(userDetails.getUsername());
 
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-        .body(new UserInfoResponse(userDetails.getId(),
-                                   userDetails.getUsername(),
-                                   userDetails.getEmail(),
-                                   roles));
+            .body(new UserInfoResponse(jwt,
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    roles));
   }
 
   @PostMapping("/signup")
@@ -95,7 +97,7 @@ public class AuthController {
                          signUpRequest.getEmail(),
                          encoder.encode(signUpRequest.getPassword()));
 
-    Set<String> strRoles = signUpRequest.getRole();
+    String strRoles = signUpRequest.getRole();
     Set<Role> roles = new HashSet<>();
 
     if (strRoles == null) {
@@ -103,38 +105,30 @@ public class AuthController {
           .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(userRole);
     } else {
-      strRoles.forEach(role -> {
-        switch (role) {
+      switch (strRoles) {
         case "responsable":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_RESPONSABLE)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
+          Role responsableRole = roleRepository.findByName(ERole.ROLE_RESPONSABLE)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          user.setRoles(responsableRole);
 
           break;
         case "chef de projet":
-          Role modRole = roleRepository.findByName(ERole.ROLE_CHEF_DE_PROJET)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
+          Role ROLE_CHEF_DE_PROJET = roleRepository.findByName(ERole.ROLE_CHEF_DE_PROJET)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          user.setRoles(ROLE_CHEF_DE_PROJET);
 
           break;
         default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_DEVELOPPEUR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
+          Role ROLE_DEVELOPPEUR = roleRepository.findByName(ERole.ROLE_DEVELOPPEUR)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          user.setRoles(ROLE_DEVELOPPEUR);;
         }
-      });
     }
 
-    user.setRoles(roles);
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
 
-  @PostMapping("/signout")
-  public ResponseEntity<?> logoutUser() {
-    ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
-    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .body(new MessageResponse("You've been signed out!"));
-  }
+
 }
