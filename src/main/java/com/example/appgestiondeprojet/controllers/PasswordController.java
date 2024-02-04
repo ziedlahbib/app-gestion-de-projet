@@ -96,7 +96,7 @@ public class PasswordController {
 			// RedirectAttributes
 
 
-			return ("successMessage, Vous avez réinitialisé avec succès votre mot de passe."+us);
+			return ("successMessage, Vous avez réinitialisé avec succès votre mot de passe.");
 			
 		} else {
 			return ("errorMessage, Oops!  Ceci est un lien de réinitialisation de mot de passe invalide.");
