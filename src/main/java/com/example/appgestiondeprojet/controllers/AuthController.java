@@ -65,21 +65,19 @@ public class AuthController {
 
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-    ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+    String jwt = jwtUtils.generateJwtToken(authentication);
 
     String roles = userDetails.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .findFirst()
             .orElse(null);
 
-    String jwt = jwtUtils.generateTokenFromUsername(userDetails.getUsername());
 
-    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-            .body(new UserInfoResponse(jwt,
-                    userDetails.getId(),
-                    userDetails.getUsername(),
-                    userDetails.getEmail(),
-                    roles));
+    return ResponseEntity.ok(new UserInfoResponse(jwt,
+            userDetails.getId(),
+            userDetails.getUsername(),
+            userDetails.getEmail(),
+            roles));
   }
 
   @PostMapping("/signup")

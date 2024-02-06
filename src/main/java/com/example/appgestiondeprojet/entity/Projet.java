@@ -8,21 +8,24 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tache implements Serializable {
+public class Projet implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String description;
+    private String nom_projet;
     @Temporal(TemporalType.DATE)
-    private Date date_debut;
-    @Temporal(TemporalType.DATE)
-    private Date date_fin;
+    private Date date_limite;
+    @ManyToOne(fetch =FetchType.LAZY)
+    private User chefDeProjet;
+    @OneToMany(fetch =FetchType.LAZY)
+    private Set<Tache> taches;
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +20,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User  {
+public class User  implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +41,10 @@ public class User  {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Role roles ;
+    @OneToMany(fetch =FetchType.LAZY,mappedBy="chefDeProjet")
+    private Set<Projet> projets;
+    @OneToMany(fetch =FetchType.LAZY)
+    private Set<Tache> taches;
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
