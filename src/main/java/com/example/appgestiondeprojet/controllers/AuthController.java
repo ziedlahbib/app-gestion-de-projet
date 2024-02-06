@@ -98,12 +98,11 @@ public class AuthController {
                          encoder.encode(signUpRequest.getPassword()));
 
     String strRoles = signUpRequest.getRole();
-    Set<Role> roles = new HashSet<>();
 
     if (strRoles == null) {
       Role userRole = roleRepository.findByName(ERole.ROLE_DEVELOPPEUR)
           .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(userRole);
+      user.setRoles(userRole);
     } else {
       switch (strRoles) {
         case "responsable":
@@ -125,6 +124,10 @@ public class AuthController {
         }
     }
 
+    user.setActive(true);
+    user.setNom(signUpRequest.getNom());
+    user.setPrenom(signUpRequest.getPrenom());
+    user.setCompetence(signUpRequest.getCompetence());
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

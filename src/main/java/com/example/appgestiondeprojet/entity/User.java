@@ -25,14 +25,14 @@ public class User  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
-
     private String prenom;
     private String username;
     private String email;
     private String password;
     private String resetToken;
-
     private Boolean active;
+    private String competence;
+    private float rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(  name = "user_roles",
