@@ -7,6 +7,8 @@ import com.example.appgestiondeprojet.services.TacheServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*",exposedHeaders="Access-Control-Allow-Origin" )
 @RestController
 @RequestMapping("/tache")
@@ -23,6 +25,12 @@ public class TacheController {
     @ResponseBody
     public Tache gettachebyid(@PathVariable("id-tache") Long idtache) {
         return tacheserv.affich_tache(idtache);
+
+    }
+    @GetMapping("/get-taches")
+    @ResponseBody
+    public List<Tache> gettaches() {
+        return tacheserv.affich_taches();
 
     }
     @PutMapping("/update-tache/{id-tache}")

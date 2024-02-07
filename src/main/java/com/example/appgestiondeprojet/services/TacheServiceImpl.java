@@ -9,6 +9,8 @@ import com.example.appgestiondeprojet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TacheServiceImpl implements ITacheservice{
     @Autowired
@@ -25,6 +27,11 @@ public class TacheServiceImpl implements ITacheservice{
     @Override
     public Tache affich_tache(Long idtache) {
         return tacherepo.findById(idtache).orElse(null);
+    }
+
+    @Override
+    public List<Tache> affich_taches() {
+        return tacherepo.findAll();
     }
 
     @Override
