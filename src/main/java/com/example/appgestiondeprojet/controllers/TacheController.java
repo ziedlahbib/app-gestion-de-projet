@@ -39,8 +39,14 @@ public class TacheController {
     }
     @PutMapping("/affecter-tache-dev/{id-user}/{id-tache}")
     @ResponseBody
-    public Tache affecterfileutilisateur(@PathVariable("id-user") Long iduser,@PathVariable("id-tache") Long idtache) {
+    public Tache affectertachedev(@PathVariable("id-user") Long iduser,@PathVariable("id-tache") Long idtache) {
         return tacheserv.affecter_tache_dev(iduser, idtache);
+
+    }
+    @PutMapping("/affecter-tache-projet/{id-projet}/{id-tache}")
+    @ResponseBody
+    public Tache affectertacheprojet(@PathVariable("id-projet") Long idprojet,@PathVariable("id-tache") Long idtache) {
+        return tacheserv.affecter_tache_projet(idtache, idprojet);
 
     }
 }

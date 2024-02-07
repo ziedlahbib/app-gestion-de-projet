@@ -44,4 +44,10 @@ public class ProjetController {
         projetserv.delete_projet(idprojet);
 
     }
+    @PutMapping("/affecter-projet-cdp/{id-user}/{id-projet}")
+    @ResponseBody
+    public Projet affectertacheprojet(@PathVariable("id-user") Long iduser,@PathVariable("id-projet") Long idprojet) {
+        return projetserv.affecter_projet_cdp(iduser, idprojet);
+
+    }
 }

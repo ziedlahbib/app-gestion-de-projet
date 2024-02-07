@@ -1,7 +1,9 @@
 package com.example.appgestiondeprojet.services;
 
 import com.example.appgestiondeprojet.entity.Projet;
+import com.example.appgestiondeprojet.entity.User;
 import com.example.appgestiondeprojet.repository.ProjetRepository;
+import com.example.appgestiondeprojet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import java.util.List;
 public class ProjetServiceImpl implements  IProjetservice {
     @Autowired
     ProjetRepository projetrepo;
+    @Autowired
+    UserRepository userrepo;
     @Override
     public Projet ajout_projet(Projet projet) {
         return projetrepo.save(projet);
@@ -41,6 +45,9 @@ public class ProjetServiceImpl implements  IProjetservice {
 
     @Override
     public Projet affecter_projet_cdp(Long iduser, Long idprojet) {
-        return null;
+        User u =userrepo.findById(iduser).orElse(null);
+        Projet p =projetrepo.findById(idprojet).orElse(null);
+        p.setChefDeProjet(u);
+        return projetrepo.save(p);
     }
 }

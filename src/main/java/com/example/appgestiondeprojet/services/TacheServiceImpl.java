@@ -1,7 +1,9 @@
 package com.example.appgestiondeprojet.services;
 
+import com.example.appgestiondeprojet.entity.Projet;
 import com.example.appgestiondeprojet.entity.Tache;
 import com.example.appgestiondeprojet.entity.User;
+import com.example.appgestiondeprojet.repository.ProjetRepository;
 import com.example.appgestiondeprojet.repository.TAcheRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ public class TacheServiceImpl implements ITacheservice{
     TAcheRepository tacherepo;
     @Autowired
     UserRepository userrepo;
+    @Autowired
+    ProjetRepository projetrepo;
     @Override
     public Tache ajout_tache(Tache tache) {
         return tacherepo.save(tache);
@@ -42,6 +46,15 @@ public class TacheServiceImpl implements ITacheservice{
         User u =userrepo.findById(iduser).orElse(null);
         Tache t=tacherepo.findById(idtache).orElse(null);
         u.getTaches().add(t);
+        return tacherepo.save(t);
+
+    }
+
+    @Override
+    public Tache affecter_tache_projet(Long idtache, Long idprojet) {
+        Tache t=tacherepo.findById(idtache).orElse(null);
+        Projet p =projetrepo.findById(idprojet).orElse(null);
+        p.getTaches().add(t);
         return tacherepo.save(t);
 
     }
