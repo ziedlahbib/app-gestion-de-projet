@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*",exposedHeaders="Access-Control-Allow-Origin" )
 @RestController
-@RequestMapping("/api/tache")
+@RequestMapping("/tache")
 public class TacheController {
     @Autowired
     TacheServiceImpl tacheserv;
