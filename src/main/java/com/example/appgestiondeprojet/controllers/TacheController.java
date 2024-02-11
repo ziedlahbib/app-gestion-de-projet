@@ -2,6 +2,7 @@ package com.example.appgestiondeprojet.controllers;
 
 import com.example.appgestiondeprojet.entity.Tache;
 import com.example.appgestiondeprojet.entity.User;
+import com.example.appgestiondeprojet.entity.UserTache;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
 import com.example.appgestiondeprojet.services.TacheServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class TacheController {
     }
     @PutMapping("/affecter-tache-dev/{id-user}/{id-tache}")
     @ResponseBody
-    public Tache affectertachedev(@PathVariable("id-user") Long iduser,@PathVariable("id-tache") Long idtache) {
+    public UserTache affectertachedev(@PathVariable("id-user") Long iduser,@PathVariable("id-tache") Long idtache) {
         return tacheserv.affecter_tache_dev(iduser, idtache);
 
     }
@@ -55,6 +56,12 @@ public class TacheController {
     @ResponseBody
     public Tache affectertacheprojet(@PathVariable("id-projet") Long idprojet,@PathVariable("id-tache") Long idtache) {
         return tacheserv.affecter_tache_projet(idtache, idprojet);
+
+    }
+    @PutMapping("/rate-user-tache/{id-tache}/{id-user}")
+    @ResponseBody
+    public UserTache rateusertache(@RequestBody UserTache usertache, @PathVariable("id-user") Long iduser,@PathVariable("id-tache") Long idtache) {
+        return tacheserv.rate_user_tache(usertache,iduser,idtache);
 
     }
 }

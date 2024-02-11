@@ -1,11 +1,10 @@
 package com.example.appgestiondeprojet.services;
 
-import com.example.appgestiondeprojet.entity.Projet;
-import com.example.appgestiondeprojet.entity.Tache;
-import com.example.appgestiondeprojet.entity.User;
+import com.example.appgestiondeprojet.entity.*;
 import com.example.appgestiondeprojet.repository.ProjetRepository;
 import com.example.appgestiondeprojet.repository.TAcheRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
+import com.example.appgestiondeprojet.repository.UserTacheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +18,8 @@ public class TacheServiceImpl implements ITacheservice{
     UserRepository userrepo;
     @Autowired
     ProjetRepository projetrepo;
+    @Autowired
+    UserTacheRepository usertacherepo;
     @Override
     public Tache ajout_tache(Tache tache) {
         return tacherepo.save(tache);
@@ -49,11 +50,20 @@ public class TacheServiceImpl implements ITacheservice{
     }
 
     @Override
-    public Tache affecter_tache_dev(Long iduser, Long idtache) {
+    public UserTache affecter_tache_dev(Long iduser, Long idtache) {
         User u =userrepo.findById(iduser).orElse(null);
         Tache t=tacherepo.findById(idtache).orElse(null);
-        u.getTaches().add(t);
-        return tacherepo.save(t);
+        // Create an instance of UserTache
+        UserTacheId userTacheId = new UserTacheId();
+
+        // Set user and tache IDs in the composite primary key
+        userTacheId.setUserId(u.getId());
+        userTacheId.setTacheId(t.getId());
+
+        // Create an instance of UserTache with the composite primary key
+        UserTache userTache = new UserTache();
+        userTache.setId(userTacheId);
+        return usertacherepo.save(userTache);
 
     }
 
@@ -64,5 +74,15 @@ public class TacheServiceImpl implements ITacheservice{
         p.getTaches().add(t);
         return tacherepo.save(t);
 
+    }
+
+    @Override
+    public UserTache rate_user_tache(UserTache usertache,Long iduser, Long idTache) {
+        User u =userrepo.findById(iduser).orElse(null);
+        Tache t=tacherepo.findById(idTache).orElse(null);
+        float r=u.getRating();
+        float rn=(usertache.getRating()+r)/2;
+        u.setRating(rn);
+        return usertacherepo.save(usertache);
     }
 }

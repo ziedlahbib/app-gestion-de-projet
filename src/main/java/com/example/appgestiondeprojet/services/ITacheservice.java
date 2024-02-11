@@ -1,6 +1,7 @@
 package com.example.appgestiondeprojet.services;
 
 import com.example.appgestiondeprojet.entity.Tache;
+import com.example.appgestiondeprojet.entity.UserTache;
 
 import java.util.List;
 
@@ -10,7 +11,8 @@ public interface ITacheservice {
     public List<Tache> affich_taches();
     public Tache update_tache(Tache tache,Long idtache);
     public void delete_tache(Long idtache);
-    public Tache affecter_tache_dev(Long iduser,Long idtache);
+    public UserTache affecter_tache_dev(Long iduser,Long idtache);
 
     public Tache affecter_tache_projet(Long idtache,Long idprojet);
+    public UserTache rate_user_tache(UserTache usertache, Long iduser, Long idTache);
 }

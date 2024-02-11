@@ -23,6 +23,7 @@ import com.example.appgestiondeprojet.repository.RoleRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
 import com.example.appgestiondeprojet.services.UserDetailsImpl;
 import com.example.appgestiondeprojet.jwt.JwtUtils;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,18 +67,23 @@ public class AuthController {
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
     String jwt = jwtUtils.generateJwtToken(authentication);
+    MessageResponse customResponse = new MessageResponse("Ce compte est désactivé");
+    User u=userRepository.findById(userDetails.getId()).orElse(null);
+    if(u.getActive()==false) {
+      return ResponseEntity.ok(customResponse);
+    }else {
+      String roles = userDetails.getAuthorities().stream()
+              .map(GrantedAuthority::getAuthority)
+              .findFirst()
+              .orElse(null);
 
-    String roles = userDetails.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .findFirst()
-            .orElse(null);
 
-
-    return ResponseEntity.ok(new UserInfoResponse(jwt,
-            userDetails.getId(),
-            userDetails.getUsername(),
-            userDetails.getEmail(),
-            roles));
+      return ResponseEntity.ok(new UserInfoResponse(jwt,
+              userDetails.getId(),
+              userDetails.getUsername(),
+              userDetails.getEmail(),
+              roles));
+    }
   }
 
   @PostMapping("/signup")
@@ -86,9 +92,9 @@ public class AuthController {
       return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
     }
 
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-      return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
-    }
+//    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+//      return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+//    }
 
     // Create new user's account
     User user = new User(signUpRequest.getUsername(),

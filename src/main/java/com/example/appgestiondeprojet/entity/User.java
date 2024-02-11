@@ -13,8 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
+                @UniqueConstraint(columnNames = "username")
         })
 @Getter
 @Setter
@@ -44,6 +43,9 @@ public class User  implements Serializable {
     @OneToMany(fetch =FetchType.LAZY,mappedBy="chefDeProjet")
     private Set<Projet> projets;
     @OneToMany(fetch =FetchType.LAZY)
+    @JoinTable(name = "user_tache",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "tache_id"))
     private Set<Tache> taches;
     public User(String username, String email, String password) {
         this.username = username;
