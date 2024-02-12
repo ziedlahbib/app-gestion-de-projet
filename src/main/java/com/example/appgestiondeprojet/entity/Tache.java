@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,6 +23,12 @@ public class Tache implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+    @ElementCollection(targetClass = Technologies.class)
+    @JoinTable(name = "technologie", joinColumns = @JoinColumn(name = "tacheid"))
+    @Column(name = "Technologies", nullable = false)
+    @Enumerated(EnumType.STRING)
+    Collection<Technologies> technologies;
+
     @Temporal(TemporalType.DATE)
     private Date date_debut;
     @Temporal(TemporalType.DATE)
