@@ -2,6 +2,7 @@ package com.example.appgestiondeprojet.services;
 
 import com.example.appgestiondeprojet.entity.Tache;
 import com.example.appgestiondeprojet.entity.UserTache;
+import com.example.appgestiondeprojet.entity.UserTacheId;
 
 import java.util.List;
 

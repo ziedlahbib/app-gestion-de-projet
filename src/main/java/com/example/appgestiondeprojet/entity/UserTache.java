@@ -18,5 +18,5 @@ import lombok.Setter;
 public class UserTache {
     @EmbeddedId
     private UserTacheId id;
-    private int rating;
+    private double rating;
 }

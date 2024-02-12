@@ -8,6 +8,7 @@ import com.example.appgestiondeprojet.repository.UserTacheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -77,12 +78,29 @@ public class TacheServiceImpl implements ITacheservice{
     }
 
     @Override
-    public UserTache rate_user_tache(UserTache usertache,Long iduser, Long idTache) {
-        User u =userrepo.findById(iduser).orElse(null);
-        Tache t=tacherepo.findById(idTache).orElse(null);
-        float r=u.getRating();
-        float rn=(usertache.getRating()+r)/2;
-        u.setRating(rn);
-        return usertacherepo.save(usertache);
+    public UserTache rate_user_tache(UserTache ut,Long iduser, Long idTache) {
+        // Find the user and tache entities
+        User u = userrepo.findById(iduser).orElse(null);
+        List<UserTache> lut=new ArrayList<>();
+        System.out.println(""+lut.size());
+        // Find the UserTache entity based on the composite key
+        UserTacheId userTacheId = new UserTacheId(iduser, idTache);
+        UserTache userTache = usertacherepo.findById(userTacheId).orElse(null);
+        userTache.setRating(ut.getRating());
+        usertacherepo.save(userTache);
+        for(Tache t:u.getTaches()){
+            UserTacheId userTId = new UserTacheId(u.getId(), t.getId());
+            lut.add(usertacherepo.findById(userTId).orElse(null));
+        }
+        double sum = 0;
+        int count = 0;
+        for (UserTache ust : lut) {
+            sum += ust.getRating();
+            count++;
+        }
+        double averageRating = sum / count;
+        u.setRating(averageRating);
+        userrepo.save(u);
+        return userTache;
     }
 }

@@ -33,7 +33,7 @@ public class User  implements Serializable {
     private String resetToken;
     private Boolean active;
     private String competence;
-    private float rating;
+    private double rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(  name = "user_roles",
