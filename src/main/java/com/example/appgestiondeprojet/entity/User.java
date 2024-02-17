@@ -40,12 +40,9 @@ public class User  implements Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Role roles ;
-    @OneToMany(fetch =FetchType.LAZY,mappedBy="chefDeProjet")
-    private Set<Projet> projets;
-    @OneToMany(fetch =FetchType.LAZY)
-    @JoinTable(name = "user_tache",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "tache_id"))
+//    @OneToMany(fetch =FetchType.LAZY,mappedBy="chefDeProjet")
+//    private Set<Projet> projets;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Tache> taches;
     public User(String username, String email, String password) {
         this.username = username;

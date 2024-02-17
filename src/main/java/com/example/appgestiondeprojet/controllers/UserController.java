@@ -4,6 +4,7 @@ import com.example.appgestiondeprojet.entity.User;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
 import com.example.appgestiondeprojet.services.IUserservice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class UserController {
     }
     @DeleteMapping("/delete-user/{id-user}")
     @ResponseBody
-    public void deleteuser(@PathVariable("id-user") Long iduser) {
-        userServ.deleteUser(iduser);
+    public ResponseEntity<String> deleteuser(@PathVariable("id-user") Long iduser) {
+        return userServ.deleteUser(iduser);
 
     }
     @GetMapping("/get-user/{id-user}")

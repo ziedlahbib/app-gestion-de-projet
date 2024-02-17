@@ -4,9 +4,13 @@ import com.example.appgestiondeprojet.entity.ERole;
 import com.example.appgestiondeprojet.entity.Role;
 import com.example.appgestiondeprojet.entity.User;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
+import com.example.appgestiondeprojet.repository.ProjetRepository;
 import com.example.appgestiondeprojet.repository.RoleRepository;
+import com.example.appgestiondeprojet.repository.TAcheRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +21,10 @@ public class UserServiceImpl implements IUserservice{
     UserRepository userRepo;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    private ProjetRepository projectRepository;
+    @Autowired
+    TAcheRepository tacherepo;
     @Override
     public User resetpassword(User user) {
         return userRepo.save(user);
@@ -60,10 +68,22 @@ public class UserServiceImpl implements IUserservice{
     }
 
     @Override
-    public void deleteUser(Long idUser) {
+    public ResponseEntity<String> deleteUser(Long idUser) {
         User u =userRepo.findById(idUser).orElse(null);
-        u.setRoles(null);
-        userRepo.deleteById(idUser);
+        Optional<User> userOptional = userRepo.findById(idUser);
+        if (userOptional.isPresent()) {
+            u.setRoles(null);
+            projectRepository.findBychefDeProjetId(idUser).forEach(project -> {
+                project.setChefDeProjet(null);
+                projectRepository.save(project);});
+            tacherepo.findByUserId(idUser).forEach(tache -> {
+                tache.setUser(null);
+                tacherepo.save(tache);});
+                userRepo.deleteById(idUser);
+            return ResponseEntity.ok("Utilisateur supprimé avec succès");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utilisateur non trouvé");
+        }
     }
 
     @Override

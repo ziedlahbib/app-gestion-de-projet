@@ -4,6 +4,7 @@ import com.example.appgestiondeprojet.entity.Projet;
 import com.example.appgestiondeprojet.entity.Tache;
 import com.example.appgestiondeprojet.services.ProjetServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,8 +41,8 @@ public class ProjetController {
     }
     @DeleteMapping("/delete-projet/{id-projet}")
     @ResponseBody
-    public void deleteprojet(@PathVariable("id-projet") Long idprojet) {
-        projetserv.delete_projet(idprojet);
+    public ResponseEntity<String> deleteprojet(@PathVariable("id-projet") Long idprojet) {
+       return projetserv.delete_projet(idprojet);
 
     }
     @PutMapping("/affecter-projet-cdp/{id-user}/{id-projet}")

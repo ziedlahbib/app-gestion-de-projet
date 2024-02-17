@@ -6,10 +6,13 @@ import com.example.appgestiondeprojet.repository.TAcheRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
 import com.example.appgestiondeprojet.repository.UserTacheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TacheServiceImpl implements ITacheservice{
@@ -46,8 +49,16 @@ public class TacheServiceImpl implements ITacheservice{
     }
 
     @Override
-    public void delete_tache(Long idtache) {
-    tacherepo.deleteById(idtache);
+    public ResponseEntity<String> delete_tache(Long idtache) {
+
+
+        Optional<Tache> userOptional = tacherepo.findById(idtache);
+        if (userOptional.isPresent()) {
+            tacherepo.deleteById(idtache);
+            return ResponseEntity.ok("Tache supprimé avec succès");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tache non trouvé");
+        }
     }
 
     @Override
