@@ -137,5 +137,30 @@ public class AuthController {
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
 
+  @PostMapping("/signup-superadmin")
+  public ResponseEntity<?> registersuperadmin(@Valid @RequestBody SignupRequest signUpRequest) {
+    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+      return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+    }
+
+//    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+//      return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+//    }
+
+    // Create new user's account
+    User user = new User(signUpRequest.getUsername(),
+            signUpRequest.getEmail(),
+            encoder.encode(signUpRequest.getPassword()));
+    Role ROLE_SUPERADMIN = roleRepository.findByName(ERole.ROLE_SUPERADMIN)
+            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+    user.setRoles(ROLE_SUPERADMIN);
+    user.setActive(true);
+    user.setNom(signUpRequest.getNom());
+    user.setPrenom(signUpRequest.getPrenom());
+    userRepository.save(user);
+
+    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+  }
+
 
 }

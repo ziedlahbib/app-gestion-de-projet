@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.example.appgestiondeprojet.services.UserDetailsServiceImpl;
+import com.example.appgestiondeprojet.config.CustomAccessDeniedHandler;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -31,6 +32,8 @@ public class WebSecurityConfig {
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
+
+    private CustomAccessDeniedHandler CustomAccessDeniedHandler;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -60,10 +63,14 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(unauthorizedHandler)
+                        .accessDeniedHandler(CustomAccessDeniedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/auth/**").permitAll()
+                        auth.requestMatchers("/auth/signup-superadmin").permitAll()
+                                .requestMatchers("/auth/signup").hasAnyAuthority("ROLE_SUPERADMIN")
+                                .requestMatchers("/auth/signin").permitAll()
                                 .requestMatchers("/forgot").permitAll()
                                 .requestMatchers("/reset/**").permitAll()
                                 .requestMatchers("/error").permitAll()
@@ -76,4 +83,5 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
 }
