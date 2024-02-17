@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*",exposedHeaders="Access-Control-Allow-Origin" )
 @RestController
@@ -31,6 +32,18 @@ public class UserController {
     @ResponseBody
     public User getuserbyid(@PathVariable("id-user") Long iduser) {
         return userServ.affichDetailUser(iduser);
+
+    }
+    @GetMapping("/exist-userbyusername/{username}")
+    @ResponseBody
+    public Boolean existbyusername(@PathVariable("username") String username) {
+        return userServ.exitbyusernape(username);
+
+    }
+    @GetMapping("/exist-userbyemail/{email}")
+    @ResponseBody
+    public Boolean existbyemail(@PathVariable("email") String email) {
+        return userServ.existbyemail(email);
 
     }
     @GetMapping("/get-users")

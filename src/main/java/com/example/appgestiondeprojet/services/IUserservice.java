@@ -23,6 +23,8 @@ public interface IUserservice {
 	public Optional<User> findbyusername(String username);
 	Optional<User> findUserByEmail(String email);
 	Optional<User> findUserByResetToken(String resetToken);
+	Boolean exitbyusernape(String username);
+	Boolean existbyemail(String email);
 	public void activer(Long iduser);
 	public void desactiver(Long iduser);
 }

@@ -112,6 +112,16 @@ public class UserServiceImpl implements IUserservice{
     }
 
     @Override
+    public Boolean exitbyusernape(String username) {
+        return userRepo.existsByUsername((username));
+    }
+
+    @Override
+    public Boolean existbyemail(String email) {
+        return userRepo.existsByEmail(email);
+    }
+
+    @Override
     public void activer(Long iduser) {
         User u = userRepo.findById(iduser).orElse(null);
         u.setActive(true);

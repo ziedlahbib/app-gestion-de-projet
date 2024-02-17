@@ -71,6 +71,8 @@ public class WebSecurityConfig {
                         auth.requestMatchers("/auth/signup-superadmin").permitAll()
                                 .requestMatchers("/auth/signup").hasAnyAuthority("ROLE_SUPERADMIN")
                                 .requestMatchers("/auth/signin").permitAll()
+                                .requestMatchers("/user/exist-userbyusername/**").permitAll()
+                                .requestMatchers("/user/exist-userbyemail/**").permitAll()
                                 .requestMatchers("/forgot").permitAll()
                                 .requestMatchers("/reset/**").permitAll()
                                 .requestMatchers("/error").permitAll()
