@@ -39,6 +39,12 @@ public class ProjetController {
         return projetserv.update_projet(t, idprojet);
 
     }
+    @GetMapping("/get-projet-buuser/{id-user}")
+    @ResponseBody
+    public List<Projet> upadateprojet( @PathVariable("id-user") Long iduser) {
+        return projetserv.affich_projets_byUser( iduser);
+
+    }
     @DeleteMapping("/delete-projet/{id-projet}")
     @ResponseBody
     public ResponseEntity<String> deleteprojet(@PathVariable("id-projet") Long idprojet) {

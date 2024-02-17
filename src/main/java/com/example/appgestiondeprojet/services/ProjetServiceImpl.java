@@ -34,6 +34,11 @@ public class ProjetServiceImpl implements  IProjetservice {
     }
 
     @Override
+    public List<Projet> affich_projets_byUser(Long iduser) {
+        return projetrepo.findBychefDeProjetId(iduser);
+    }
+
+    @Override
     public Projet update_projet(Projet projet, Long idprojet) {
         Projet p =projetrepo.findById(idprojet).orElse(null);
         p.setNom_projet(projet.getNom_projet());
