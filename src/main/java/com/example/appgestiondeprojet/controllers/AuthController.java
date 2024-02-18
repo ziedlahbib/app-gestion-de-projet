@@ -1,9 +1,9 @@
 package com.example.appgestiondeprojet.controllers;
 
+import com.example.appgestiondeprojet.entity.*;
+import com.example.appgestiondeprojet.repository.CompetenceRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,9 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import com.example.appgestiondeprojet.entity.ERole;
-import com.example.appgestiondeprojet.entity.Role;
-import com.example.appgestiondeprojet.entity.User;
 import com.example.appgestiondeprojet.payload.request.LoginRequest;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
 import com.example.appgestiondeprojet.payload.response.MessageResponse;
@@ -23,11 +20,6 @@ import com.example.appgestiondeprojet.repository.RoleRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
 import com.example.appgestiondeprojet.services.UserDetailsImpl;
 import com.example.appgestiondeprojet.jwt.JwtUtils;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 // other imports here
 
 //for Angular Client (withCredentials)
@@ -55,6 +47,8 @@ public class AuthController {
 
   @Autowired
   JwtUtils jwtUtils;
+  @Autowired
+  CompetenceRepository usercomprrpo;
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -87,7 +81,8 @@ public class AuthController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest , @RequestBody Competence competence
+          ,@RequestBody int lvl) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
     }
@@ -101,6 +96,16 @@ public class AuthController {
                          signUpRequest.getEmail(),
                          encoder.encode(signUpRequest.getPassword()));
 
+    usercomprrpo.save(competence);
+    UserCompetence userCompetence = new UserCompetence();
+    userCompetence.setUser(user);
+    userCompetence.setCompetence(competence);
+    userCompetence.setLvl(lvl); // Définir le niveau de compétence si nécessaire
+
+    // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
+    user.getUserCompetences().add(userCompetence);
+
+    // Enregistrer les modifications dans la base de données
     String strRoles = signUpRequest.getRole();
 
       switch (strRoles) {
@@ -134,7 +139,6 @@ public class AuthController {
     user.setActive(true);
     user.setNom(signUpRequest.getNom());
     user.setPrenom(signUpRequest.getPrenom());
-    user.setCompetence(signUpRequest.getCompetence());
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

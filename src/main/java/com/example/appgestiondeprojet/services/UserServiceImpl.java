@@ -4,10 +4,7 @@ import com.example.appgestiondeprojet.entity.ERole;
 import com.example.appgestiondeprojet.entity.Role;
 import com.example.appgestiondeprojet.entity.User;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
-import com.example.appgestiondeprojet.repository.ProjetRepository;
-import com.example.appgestiondeprojet.repository.RoleRepository;
-import com.example.appgestiondeprojet.repository.TAcheRepository;
-import com.example.appgestiondeprojet.repository.UserRepository;
+import com.example.appgestiondeprojet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +22,8 @@ public class UserServiceImpl implements IUserservice{
     private ProjetRepository projectRepository;
     @Autowired
     TAcheRepository tacherepo;
+    @Autowired
+    CompetenceRepository usercomprrpo;
     @Override
     public User resetpassword(User user) {
         return userRepo.save(user);

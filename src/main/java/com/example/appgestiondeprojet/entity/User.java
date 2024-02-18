@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,7 +33,6 @@ public class User  implements Serializable {
     private String password;
     private String resetToken;
     private Boolean active;
-    private String competence;
     private double rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,6 +44,8 @@ public class User  implements Serializable {
 //    private Set<Projet> projets;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Tache> taches;
+    @OneToMany(mappedBy = "user")
+    private List<UserCompetence> userCompetences;
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;

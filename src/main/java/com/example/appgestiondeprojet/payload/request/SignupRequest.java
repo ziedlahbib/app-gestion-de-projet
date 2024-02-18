@@ -19,7 +19,6 @@ public class SignupRequest {
 
     private String nom;
     private String prenom;
-    private String competence;
     @NotBlank
     @Email
     private String email;
