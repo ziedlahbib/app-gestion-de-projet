@@ -1,5 +1,8 @@
 package com.example.appgestiondeprojet.payload.request;
 
+import com.example.appgestiondeprojet.entity.Technologies;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -19,6 +22,9 @@ public class SignupRequest {
 
     private String nom;
     private String prenom;
+    @Enumerated(EnumType.STRING)
+    private Technologies competence;
+    private int lvl;
     @NotBlank
     @Email
     private String email;

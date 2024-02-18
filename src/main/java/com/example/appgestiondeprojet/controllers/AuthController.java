@@ -2,6 +2,7 @@ package com.example.appgestiondeprojet.controllers;
 
 import com.example.appgestiondeprojet.entity.*;
 import com.example.appgestiondeprojet.repository.CompetenceRepository;
+import com.example.appgestiondeprojet.repository.UserCompetenceReposirory;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +49,9 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
   @Autowired
-  CompetenceRepository usercomprrpo;
+  CompetenceRepository comprrpo;
+  @Autowired
+  UserCompetenceReposirory usercomprrpo;
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -81,8 +84,7 @@ public class AuthController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest , @RequestBody Competence competence
-          ,@RequestBody int lvl) {
+  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
     }
@@ -96,14 +98,7 @@ public class AuthController {
                          signUpRequest.getEmail(),
                          encoder.encode(signUpRequest.getPassword()));
 
-    usercomprrpo.save(competence);
-    UserCompetence userCompetence = new UserCompetence();
-    userCompetence.setUser(user);
-    userCompetence.setCompetence(competence);
-    userCompetence.setLvl(lvl); // Définir le niveau de compétence si nécessaire
 
-    // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
-    user.getUserCompetences().add(userCompetence);
 
     // Enregistrer les modifications dans la base de données
     String strRoles = signUpRequest.getRole();
@@ -140,6 +135,18 @@ public class AuthController {
     user.setNom(signUpRequest.getNom());
     user.setPrenom(signUpRequest.getPrenom());
     userRepository.save(user);
+    Competence competence = new Competence();
+    competence.setTechnologies(signUpRequest.getCompetence());
+    comprrpo.save(competence);
+    UserCompetence userCompetence = new UserCompetence();
+    userCompetence.setUser(user);
+    userCompetence.setCompetence(competence);
+    userCompetence.setLvl(signUpRequest.getLvl()); // Définir le niveau de compétence si nécessaire
+
+    // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
+
+    user.getUserCompetences().add(userCompetence);
+    usercomprrpo.save(userCompetence);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }

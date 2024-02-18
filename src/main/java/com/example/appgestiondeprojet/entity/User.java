@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class User  implements Serializable {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Tache> taches;
     @OneToMany(mappedBy = "user")
-    private List<UserCompetence> userCompetences;
+    private List<UserCompetence> userCompetences = new ArrayList<>();;
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
