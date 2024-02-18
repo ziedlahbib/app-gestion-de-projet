@@ -103,16 +103,23 @@ public class AuthController {
 
     String strRoles = signUpRequest.getRole();
 
-    if (strRoles == null) {
-      Role userRole = roleRepository.findByName(ERole.ROLE_DEVELOPPEUR)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      user.setRoles(userRole);
-    } else {
       switch (strRoles) {
         case "responsable":
           Role responsableRole = roleRepository.findByName(ERole.ROLE_RESPONSABLE)
                   .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           user.setRoles(responsableRole);
+
+          break;
+        case "developpeur":
+          Role ROLE_DEVELOPPEUR = roleRepository.findByName(ERole.ROLE_DEVELOPPEUR)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          user.setRoles(ROLE_DEVELOPPEUR);
+
+          break;
+        case "superadmin":
+          Role ROLE_SUPERADMIN = roleRepository.findByName(ERole.ROLE_SUPERADMIN)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          user.setRoles(ROLE_SUPERADMIN);
 
           break;
         case "chef de projet":
@@ -121,12 +128,8 @@ public class AuthController {
           user.setRoles(ROLE_CHEF_DE_PROJET);
 
           break;
-        default:
-          Role ROLE_DEVELOPPEUR = roleRepository.findByName(ERole.ROLE_DEVELOPPEUR)
-                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          user.setRoles(ROLE_DEVELOPPEUR);;
         }
-    }
+
 
     user.setActive(true);
     user.setNom(signUpRequest.getNom());
