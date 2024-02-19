@@ -46,7 +46,7 @@ public class User  implements Serializable {
 //    private Set<Projet> projets;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Tache> taches;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<UserCompetence> userCompetences = new ArrayList<>();;
     public User(String username, String email, String password) {
         this.username = username;

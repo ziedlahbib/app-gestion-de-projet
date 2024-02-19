@@ -26,7 +26,7 @@ public class UserCompetence implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "competence_id")
     private Competence competence;
 

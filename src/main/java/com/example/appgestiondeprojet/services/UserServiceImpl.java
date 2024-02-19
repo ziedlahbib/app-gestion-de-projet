@@ -2,6 +2,7 @@ package com.example.appgestiondeprojet.services;
 
 import com.example.appgestiondeprojet.entity.*;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
+import com.example.appgestiondeprojet.payload.response.MessageResponse;
 import com.example.appgestiondeprojet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,7 +84,7 @@ public class UserServiceImpl implements IUserservice{
     }
 
     @Override
-    public ResponseEntity<String> deleteUser(Long idUser) {
+    public ResponseEntity<?> deleteUser(Long idUser) {
         User u =userRepo.findById(idUser).orElse(null);
         Optional<User> userOptional = userRepo.findById(idUser);
         if (userOptional.isPresent()) {
@@ -95,7 +96,7 @@ public class UserServiceImpl implements IUserservice{
                 tache.setUser(null);
                 tacherepo.save(tache);});
                 userRepo.deleteById(idUser);
-            return ResponseEntity.ok("Utilisateur supprimé avec succès");
+            return ResponseEntity.ok(new MessageResponse("Utilisateur supprimé avec succès"));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utilisateur non trouvé");
         }
