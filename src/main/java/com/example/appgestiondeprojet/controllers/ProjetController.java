@@ -47,7 +47,7 @@ public class ProjetController {
     }
     @DeleteMapping("/delete-projet/{id-projet}")
     @ResponseBody
-    public ResponseEntity<String> deleteprojet(@PathVariable("id-projet") Long idprojet) {
+    public ResponseEntity<?> deleteprojet(@PathVariable("id-projet") Long idprojet) {
        return projetserv.delete_projet(idprojet);
 
     }

@@ -2,6 +2,7 @@ package com.example.appgestiondeprojet.services;
 
 import com.example.appgestiondeprojet.entity.Projet;
 import com.example.appgestiondeprojet.entity.User;
+import com.example.appgestiondeprojet.payload.response.MessageResponse;
 import com.example.appgestiondeprojet.repository.ProjetRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,14 @@ public class ProjetServiceImpl implements  IProjetservice {
     }
 
     @Override
-    public ResponseEntity<String> delete_projet(Long idprojet) {
+    public ResponseEntity<?> delete_projet(Long idprojet) {
         Optional<Projet> userOptional = projetrepo.findById(idprojet);
         if (userOptional.isPresent()) {
             projetrepo.deleteById(idprojet);
-            return ResponseEntity.ok("Projet supprimé avec succès");
+            return ResponseEntity.ok(new MessageResponse("Projet supprimé avec succès"));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Projet non trouvé");
+
         }
     }
 

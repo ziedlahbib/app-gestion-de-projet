@@ -12,6 +12,6 @@ public interface IProjetservice {
     public List<Projet> affich_projets();
     public List<Projet> affich_projets_byUser(Long iduser);
     public Projet update_projet(Projet projet,Long idprojet);
-    public ResponseEntity<String> delete_projet(Long idprojet);
+    public ResponseEntity<?> delete_projet(Long idprojet);
     public Projet affecter_projet_cdp(Long iduser,Long idprojet);
 }
