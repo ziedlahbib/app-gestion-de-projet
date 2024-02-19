@@ -1,5 +1,6 @@
 package com.example.appgestiondeprojet.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,5 +25,6 @@ public class Competence implements Serializable {
     Technologies technologies;
 
     @OneToMany(mappedBy = "competence")
+    @JsonIgnore
     private List<UserCompetence> userCompetences;
 }

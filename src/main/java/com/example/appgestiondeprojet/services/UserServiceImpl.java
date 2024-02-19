@@ -1,8 +1,6 @@
 package com.example.appgestiondeprojet.services;
 
-import com.example.appgestiondeprojet.entity.ERole;
-import com.example.appgestiondeprojet.entity.Role;
-import com.example.appgestiondeprojet.entity.User;
+import com.example.appgestiondeprojet.entity.*;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
 import com.example.appgestiondeprojet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,9 @@ public class UserServiceImpl implements IUserservice{
     @Autowired
     TAcheRepository tacherepo;
     @Autowired
-    CompetenceRepository usercomprrpo;
+    UserCompetenceReposirory usercomprrpo;
+    @Autowired
+    CompetenceRepository comprrpo;
     @Override
     public User resetpassword(User user) {
         return userRepo.save(user);
@@ -36,7 +36,6 @@ public class UserServiceImpl implements IUserservice{
         u.setNom(signUpRequest.getNom());
         u.setPrenom(signUpRequest.getPrenom());
         u.setUsername(signUpRequest.getUsername());
-
         String strRoles = signUpRequest.getRole();
 
         if (strRoles == null) {
@@ -63,7 +62,24 @@ public class UserServiceImpl implements IUserservice{
                     u.setRoles(ROLE_DEVELOPPEUR);;
             }
         }
+        UserCompetence usercomp =usercomprrpo.findByUserId(u.getId());
+        Competence competence = usercomp.getCompetence();
+        competence.setTechnologies(signUpRequest.getCompetence());
+        comprrpo.save(competence);
+        usercomp.setUser(u);
+        usercomp.setCompetence(competence);
+        usercomp.setLvl(signUpRequest.getLvl()); // Définir le niveau de compétence si nécessaire
+
+        // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
+
+        u.getUserCompetences().add(usercomp);
+        usercomprrpo.save(usercomp);
         return userRepo.save(u);
+    }
+
+    @Override
+    public User updateProfile(SignupRequest signUpRequest, Long idUser) {
+        return null;
     }
 
     @Override
