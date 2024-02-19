@@ -42,11 +42,6 @@ public class UserServiceImpl implements IUserservice {
         u.setUsername(signUpRequest.getUsername());
         String strRoles = signUpRequest.getRole();
 
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_DEVELOPPEUR)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            u.setRoles(userRole);
-        } else {
             switch (strRoles) {
                 case "responsable":
                     Role responsableRole = roleRepository.findByName(ERole.ROLE_RESPONSABLE)
@@ -60,13 +55,19 @@ public class UserServiceImpl implements IUserservice {
                     u.setRoles(ROLE_CHEF_DE_PROJET);
 
                     break;
+                case "superadmin":
+                    Role superadminrole = roleRepository.findByName(ERole.ROLE_SUPERADMIN)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    u.setRoles(superadminrole);
+
+                    break;
                 default:
                     Role ROLE_DEVELOPPEUR = roleRepository.findByName(ERole.ROLE_DEVELOPPEUR)
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     u.setRoles(ROLE_DEVELOPPEUR);
-                    ;
+
             }
-        }
+
         UserCompetence usercomp = u.getUserCompetences();
         if(usercomp!=null){
             Competence competence = usercomp.getCompetence();
