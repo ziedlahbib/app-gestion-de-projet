@@ -33,8 +33,9 @@ public class UserServiceImpl implements IUserservice {
     }
 
     @Override
-    public User updateUser(SignupRequest signUpRequest, Long idUser) {
+    public ResponseEntity<UpdateProfileResponse> updateUser(SignupRequest signUpRequest, Long idUser) {
         User u = userRepo.findById(idUser).orElse(null);
+        if (u != null) {
         u.setEmail(signUpRequest.getEmail());
         u.setNom(signUpRequest.getNom());
         u.setPrenom(signUpRequest.getPrenom());
@@ -66,19 +67,41 @@ public class UserServiceImpl implements IUserservice {
                     ;
             }
         }
-        UserCompetence usercomp = usercomprrpo.findByUserId(u.getId());
-        Competence competence = usercomp.getCompetence();
-        competence.setTechnologies(signUpRequest.getCompetence());
-        comprrpo.save(competence);
-        usercomp.setUser(u);
-        usercomp.setCompetence(competence);
-        usercomp.setLvl(signUpRequest.getLvl()); // Définir le niveau de compétence si nécessaire
+        UserCompetence usercomp = u.getUserCompetences();
+        if(usercomp!=null){
+            Competence competence = usercomp.getCompetence();
+            competence.setTechnologies(signUpRequest.getCompetence());
+            comprrpo.save(competence);
+            usercomp.setUser(u);
+            usercomp.setCompetence(competence);
+            usercomp.setLvl(signUpRequest.getLvl()); // Définir le niveau de compétence si nécessaire
 
-        // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
+            // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
 
-        u.setUserCompetences(usercomp);
-        usercomprrpo.save(usercomp);
-        return userRepo.save(u);
+            u.setUserCompetences(usercomp);
+            usercomprrpo.save(usercomp);
+        }else{
+            UserCompetence usercomp2=new UserCompetence();
+            Competence competence = new Competence();
+            competence.setTechnologies(signUpRequest.getCompetence());
+            comprrpo.save(competence);
+            usercomp2.setUser(u);
+            usercomp2.setCompetence(competence);
+            usercomp2.setLvl(signUpRequest.getLvl()); // Définir le niveau de compétence si nécessaire
+
+            // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
+
+            u.setUserCompetences(usercomp2);
+            usercomprrpo.save(usercomp2);
+        }
+
+        userRepo.save(u);
+        UpdateProfileResponse response = new UpdateProfileResponse("Modifié avec succès", u);
+        return ResponseEntity.ok().body(response);
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UpdateProfileResponse("Utilisateur non trouvé", null));
+
+    }
     }
 
     @Override

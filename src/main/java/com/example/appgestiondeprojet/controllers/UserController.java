@@ -19,7 +19,7 @@ public class UserController {
     IUserservice userServ;
     @PutMapping("/update-user/{id-user}")
     @ResponseBody
-    public User upadateuser(@RequestBody SignupRequest u, @PathVariable("id-user") Long iduser) {
+    public ResponseEntity<UpdateProfileResponse> upadateuser(@RequestBody SignupRequest u, @PathVariable("id-user") Long iduser) {
         return userServ.updateUser(u, iduser);
 
     }
