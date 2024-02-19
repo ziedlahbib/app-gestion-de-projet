@@ -1,8 +1,11 @@
 package com.example.appgestiondeprojet.controllers;
 
+import com.example.appgestiondeprojet.payload.response.MessageResponse;
 import com.example.appgestiondeprojet.services.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +33,13 @@ public class PasswordController {
 	
     // Process form submission from forgotPassword page
 	@RequestMapping(value = "/forgot", method = RequestMethod.PUT)
-	public String processForgotPasswordForm( @RequestParam("email") String userEmail, HttpServletRequest request) {
+	public ResponseEntity<?> processForgotPasswordForm( @RequestParam("email") String userEmail, HttpServletRequest request) {
 
 		// Lookup user in database by e-mail
 		Optional<User> optional = userService.findUserByEmail(userEmail);
 
 		if (!optional.isPresent()) {
-			return("errorMessage, We didn't find an account for that e-mail address.");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("errorMessage, We didn't find an account for that e-mail address.");
 		} else {
 			
 			// Generate random 36-character string token for reset password 
@@ -53,13 +56,13 @@ public class PasswordController {
 			passwordResetEmail.setFrom("support@pfe.com");
 			passwordResetEmail.setTo(user.getEmail());
 			passwordResetEmail.setSubject("Demande de réinitialisation du mot de passe");
-			passwordResetEmail.setText("Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous:\n" + appUrl+":4200/#/"
+			passwordResetEmail.setText("Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous:" + appUrl+":4200/#/"
 					+ "/reset?token=" + user.getResetToken());
 			
 			emailService.sendEmail(passwordResetEmail);
 
 			// Add success message to view
-			return("successMessage, Un lien de réinitialisation du mot de passe a été envoyé à " + userEmail);
+			return ResponseEntity.ok(new MessageResponse("successMessage, Vous avez réinitialisé avec succès votre mot de passe."));
 		}
 
 
@@ -70,9 +73,9 @@ public class PasswordController {
 	// Process reset password form
 	@PutMapping("/reset/{rt}")
 	@ResponseBody
-	public String setNewPassword(@RequestBody String us,
-			//@RequestParam Map<String, String> requestParams,
-			@PathVariable("rt") String rt) {
+	public ResponseEntity<?> setNewPassword(@RequestBody String us,
+											//@RequestParam Map<String, String> requestParams,
+											@PathVariable("rt") String rt) {
 
 		// Find the user associated with the reset token
 		//Optional<User> user = userService.findUserByResetToken(requestParams.get("token"));
@@ -95,13 +98,10 @@ public class PasswordController {
 			// In order to set a model attribute on a redirect, we must use
 			// RedirectAttributes
 
-
-			return ("successMessage, Vous avez réinitialisé avec succès votre mot de passe.");
-			
-		} else {
-			return ("errorMessage, Oops!  Ceci est un lien de réinitialisation de mot de passe invalide.");
-
-		}
+		return ResponseEntity.ok(new MessageResponse("successMessage, Vous avez réinitialisé avec succès votre mot de passe."));
+	} else {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("errorMessage, Oops!  Ceci est un lien de réinitialisation de mot de passe invalide.");
+	}
 		
 
    }
