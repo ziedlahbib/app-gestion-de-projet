@@ -2,6 +2,7 @@ package com.example.appgestiondeprojet.services;
 
 
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
+import com.example.appgestiondeprojet.payload.response.UpdateProfileResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 //import request.ChangePasswordRequest;
@@ -17,7 +18,7 @@ public interface IUserservice {
 //	public String updatepassword(ChangePasswordRequest request ,Long idUser);
 	public User resetpassword(User user );
 	public User updateUser(SignupRequest signUpRequest, Long idUser);
-	public User updateProfile(SignupRequest signUpRequest, Long idUser);
+	public ResponseEntity<UpdateProfileResponse> updateProfile(SignupRequest signUpRequest, Long idUser);
 	public ResponseEntity<?> deleteUser(Long idUser);
 	public User affichDetailUser(Long idUser);
 	public List<User> affichUser();

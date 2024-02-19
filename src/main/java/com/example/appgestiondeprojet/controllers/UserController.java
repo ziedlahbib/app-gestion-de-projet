@@ -2,6 +2,7 @@ package com.example.appgestiondeprojet.controllers;
 
 import com.example.appgestiondeprojet.entity.User;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
+import com.example.appgestiondeprojet.payload.response.UpdateProfileResponse;
 import com.example.appgestiondeprojet.services.IUserservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,17 @@ public class UserController {
     IUserservice userServ;
     @PutMapping("/update-user/{id-user}")
     @ResponseBody
-    public User upadateProduit(@RequestBody SignupRequest u, @PathVariable("id-user") Long iduser) {
+    public User upadateuser(@RequestBody SignupRequest u, @PathVariable("id-user") Long iduser) {
         return userServ.updateUser(u, iduser);
 
     }
+    @PutMapping("/update-profile/{id-user}")
+    @ResponseBody
+    public ResponseEntity<UpdateProfileResponse> upadateProfile(@RequestBody SignupRequest u, @PathVariable("id-user") Long iduser) {
+        return userServ.updateProfile(u, iduser);
+
+    }
+
     @DeleteMapping("/delete-user/{id-user}")
     @ResponseBody
     public ResponseEntity<?> deleteuser(@PathVariable("id-user") Long iduser) {

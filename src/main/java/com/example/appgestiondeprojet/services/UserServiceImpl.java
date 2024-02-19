@@ -3,6 +3,7 @@ package com.example.appgestiondeprojet.services;
 import com.example.appgestiondeprojet.entity.*;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
 import com.example.appgestiondeprojet.payload.response.MessageResponse;
+import com.example.appgestiondeprojet.payload.response.UpdateProfileResponse;
 import com.example.appgestiondeprojet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 @Service
-public class UserServiceImpl implements IUserservice{
+public class UserServiceImpl implements IUserservice {
     @Autowired
     UserRepository userRepo;
     @Autowired
@@ -25,6 +26,7 @@ public class UserServiceImpl implements IUserservice{
     UserCompetenceReposirory usercomprrpo;
     @Autowired
     CompetenceRepository comprrpo;
+
     @Override
     public User resetpassword(User user) {
         return userRepo.save(user);
@@ -60,10 +62,11 @@ public class UserServiceImpl implements IUserservice{
                 default:
                     Role ROLE_DEVELOPPEUR = roleRepository.findByName(ERole.ROLE_DEVELOPPEUR)
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                    u.setRoles(ROLE_DEVELOPPEUR);;
+                    u.setRoles(ROLE_DEVELOPPEUR);
+                    ;
             }
         }
-        UserCompetence usercomp =usercomprrpo.findByUserId(u.getId());
+        UserCompetence usercomp = usercomprrpo.findByUserId(u.getId());
         Competence competence = usercomp.getCompetence();
         competence.setTechnologies(signUpRequest.getCompetence());
         comprrpo.save(competence);
@@ -79,9 +82,22 @@ public class UserServiceImpl implements IUserservice{
     }
 
     @Override
-    public User updateProfile(SignupRequest signUpRequest, Long idUser) {
-        return null;
+    public ResponseEntity<UpdateProfileResponse> updateProfile(SignupRequest signUpRequest, Long idUser) {
+        User u = userRepo.findById(idUser).orElse(null);
+        if (u != null) {
+            u.setNom(signUpRequest.getNom());
+            u.setPrenom(signUpRequest.getPrenom());
+            u.setEmail(signUpRequest.getEmail());
+            u.setUsername(signUpRequest.getUsername());
+            userRepo.save(u);
+            UpdateProfileResponse response = new UpdateProfileResponse("Modifié avec succès", u);
+            return ResponseEntity.ok().body(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UpdateProfileResponse("Utilisateur non trouvé", null));
+
+        }
     }
+
 
     @Override
     public ResponseEntity<?> deleteUser(Long idUser) {
