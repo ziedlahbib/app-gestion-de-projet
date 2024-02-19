@@ -73,7 +73,7 @@ public class UserServiceImpl implements IUserservice{
 
         // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
 
-        u.getUserCompetences().add(usercomp);
+        u.setUserCompetences(usercomp);
         usercomprrpo.save(usercomp);
         return userRepo.save(u);
     }

@@ -145,7 +145,7 @@ public class AuthController {
 
     // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
 
-    user.getUserCompetences().add(userCompetence);
+    user.setUserCompetences(userCompetence);
     usercomprrpo.save(userCompetence);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
