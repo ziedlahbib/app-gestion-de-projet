@@ -49,8 +49,9 @@ public class ProjetServiceImpl implements  IProjetservice {
 
     @Override
     public ResponseEntity<?> delete_projet(Long idprojet) {
-        Optional<Projet> userOptional = projetrepo.findById(idprojet);
-        if (userOptional.isPresent()) {
+        Projet projet = projetrepo.findById(idprojet).orElse(null);
+        if (projet!=null) {
+            projet.setChefDeProjet(null);
             projetrepo.deleteById(idprojet);
             return ResponseEntity.ok(new MessageResponse("Projet supprimé avec succès"));
         } else {

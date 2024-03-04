@@ -52,8 +52,9 @@ public class TacheServiceImpl implements ITacheservice{
     public ResponseEntity<String> delete_tache(Long idtache) {
 
 
-        Optional<Tache> userOptional = tacherepo.findById(idtache);
-        if (userOptional.isPresent()) {
+        Tache tache = tacherepo.findById(idtache).orElse(null);
+        if (tache!=null) {
+            tache.setUser(null);
             tacherepo.deleteById(idtache);
             return ResponseEntity.ok("Tache supprimé avec succès");
         } else {

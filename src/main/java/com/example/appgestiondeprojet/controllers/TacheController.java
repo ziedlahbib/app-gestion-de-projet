@@ -7,6 +7,7 @@ import com.example.appgestiondeprojet.entity.UserTacheId;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
 import com.example.appgestiondeprojet.services.TacheServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,8 +44,8 @@ public class TacheController {
     }
     @DeleteMapping("/delete-tache/{id-tache}")
     @ResponseBody
-    public void deletetache(@PathVariable("id-tache") Long idtache) {
-        tacheserv.delete_tache(idtache);
+    public ResponseEntity<String> deletetache(@PathVariable("id-tache") Long idtache) {
+        return tacheserv.delete_tache(idtache);
 
     }
     @PutMapping("/affecter-tache-dev/{id-user}/{id-tache}")
