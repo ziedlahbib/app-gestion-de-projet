@@ -69,34 +69,6 @@ public class UserServiceImpl implements IUserservice {
 
             }
 
-        UserCompetence usercomp = u.getUserCompetences();
-        if(usercomp!=null){
-            Competence competence = usercomp.getCompetence();
-            competence.setTechnologies(signUpRequest.getCompetence());
-            comprrpo.save(competence);
-            usercomp.setUser(u);
-            usercomp.setCompetence(competence);
-            usercomp.setLvl(signUpRequest.getLvl()); // Définir le niveau de compétence si nécessaire
-
-            // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
-
-            u.setUserCompetences(usercomp);
-            usercomprrpo.save(usercomp);
-        }else{
-            UserCompetence usercomp2=new UserCompetence();
-            Competence competence = new Competence();
-            competence.setTechnologies(signUpRequest.getCompetence());
-            comprrpo.save(competence);
-            usercomp2.setUser(u);
-            usercomp2.setCompetence(competence);
-            usercomp2.setLvl(signUpRequest.getLvl()); // Définir le niveau de compétence si nécessaire
-
-            // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
-
-            u.setUserCompetences(usercomp2);
-            usercomprrpo.save(usercomp2);
-        }
-
         userRepo.save(u);
         UpdateProfileResponse response = new UpdateProfileResponse("Modifié avec succès", u);
         return ResponseEntity.ok().body(response);
@@ -197,6 +169,20 @@ public class UserServiceImpl implements IUserservice {
         User u = userRepo.findById(iduser).orElse(null);
         u.setActive(false);
         userRepo.save(u);
+
+    }
+
+    @Override
+    public User affecter_userCompetence(UserCompetence userc,Long idUser, Long idComp) {
+        User user =userRepo.findById(idUser).orElse(null);
+        Competence c =comprrpo.findById(idComp).orElse(null);
+
+            UserCompetence userCompetence = new UserCompetence();
+            userCompetence.setUser(user);
+            userCompetence.setCompetence(c);
+            userCompetence.setLvl(userc.getLvl());
+            usercomprepo.save(userCompetence);
+            return user;
 
     }
 }

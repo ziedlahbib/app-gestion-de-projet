@@ -11,4 +11,5 @@ public interface ICompetenceService {
     public ResponseEntity<?> delete_competnece(Long idcomp);
     public List<Competence> affich_competneces();
     public Competence affich_competnece(Long idcomp);
+
 }

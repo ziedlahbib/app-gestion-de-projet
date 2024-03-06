@@ -1,6 +1,7 @@
 package com.example.appgestiondeprojet.services;
 
 
+import com.example.appgestiondeprojet.entity.UserCompetence;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
 import com.example.appgestiondeprojet.payload.response.UpdateProfileResponse;
 import org.springframework.http.ResponseEntity;
@@ -28,4 +29,5 @@ public interface IUserservice {
 	Boolean existbyemail(String email);
 	public void activer(Long iduser);
 	public void desactiver(Long iduser);
+	public User affecter_userCompetence (UserCompetence userc, Long idUser, Long idComp);
 }

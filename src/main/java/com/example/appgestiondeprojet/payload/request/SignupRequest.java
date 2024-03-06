@@ -22,9 +22,6 @@ public class SignupRequest {
 
     private String nom;
     private String prenom;
-    @Enumerated(EnumType.STRING)
-    private Technologies competence;
-    private int lvl;
     @NotBlank
     @Email
     private String email;

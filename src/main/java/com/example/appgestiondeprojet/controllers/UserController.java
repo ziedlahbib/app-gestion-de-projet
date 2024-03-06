@@ -1,6 +1,7 @@
 package com.example.appgestiondeprojet.controllers;
 
 import com.example.appgestiondeprojet.entity.User;
+import com.example.appgestiondeprojet.entity.UserCompetence;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
 import com.example.appgestiondeprojet.payload.response.UpdateProfileResponse;
 import com.example.appgestiondeprojet.services.IUserservice;
@@ -70,6 +71,12 @@ public class UserController {
     @ResponseBody
     public void desactiveruser(@PathVariable("id-user") Long iduser) {
         userServ.desactiver( iduser);
+
+    }
+    @PutMapping("/affecter-user-compenence/{id-user}/{id-comp}")
+    @ResponseBody
+    public User affecter_user_competence(@RequestBody UserCompetence usc, @PathVariable("id-user") Long iduser, @PathVariable("id-comp") Long idcomp) {
+       return  userServ.affecter_userCompetence(usc, iduser,idcomp);
 
     }
 }

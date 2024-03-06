@@ -137,46 +137,6 @@ public class AuthController {
     user.setNom(signUpRequest.getNom());
     user.setPrenom(signUpRequest.getPrenom());
     userRepository.save(user);
-    List<Competence> lsc =comprrpo.findAll();
-    boolean competenceExists = false;
-    Competence existingCompetence = null;
-
-// Iterate over each competence in the list
-    for (Competence c : lsc) {
-      // Check if the technologies in the competence match those in the signUpRequest
-      if (c.getTechnologies().equals(signUpRequest.getCompetence())) {
-        // If a matching competence is found, set the flag and assign the competence
-        competenceExists = true;
-        existingCompetence = c;
-        break;
-      }
-    }
-
-// If a matching competence is found, assign it to the user competence
-    if (competenceExists) {
-      System.out.println("Competence exists");
-      // Assuming you have appropriate logic to set user and level
-      UserCompetence userCompetence = new UserCompetence();
-      userCompetence.setUser(user);
-      userCompetence.setCompetence(existingCompetence);
-      userCompetence.setLvl(signUpRequest.getLvl());
-      user.setUserCompetences(userCompetence);
-      usercomprrpo.save(userCompetence);
-    } else {
-      // If no matching competence is found, create a new competence and assign it
-      Competence newCompetence = new Competence();
-      newCompetence.setTechnologies(signUpRequest.getCompetence());
-      comprrpo.save(newCompetence);
-
-      UserCompetence userCompetence = new UserCompetence();
-      userCompetence.setUser(user);
-      userCompetence.setCompetence(newCompetence);
-      userCompetence.setLvl(signUpRequest.getLvl());
-      user.setUserCompetences(userCompetence);
-      usercomprrpo.save(userCompetence);
-    }
-
-
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
 
