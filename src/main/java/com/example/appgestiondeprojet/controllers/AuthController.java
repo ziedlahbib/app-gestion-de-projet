@@ -21,6 +21,8 @@ import com.example.appgestiondeprojet.repository.RoleRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
 import com.example.appgestiondeprojet.services.UserDetailsImpl;
 import com.example.appgestiondeprojet.jwt.JwtUtils;
+
+import java.util.List;
 // other imports here
 
 //for Angular Client (withCredentials)
@@ -135,18 +137,45 @@ public class AuthController {
     user.setNom(signUpRequest.getNom());
     user.setPrenom(signUpRequest.getPrenom());
     userRepository.save(user);
-    Competence competence = new Competence();
-    competence.setTechnologies(signUpRequest.getCompetence());
-    comprrpo.save(competence);
-    UserCompetence userCompetence = new UserCompetence();
-    userCompetence.setUser(user);
-    userCompetence.setCompetence(competence);
-    userCompetence.setLvl(signUpRequest.getLvl()); // Définir le niveau de compétence si nécessaire
+    List<Competence> lsc =comprrpo.findAll();
+    boolean competenceExists = false;
+    Competence existingCompetence = null;
 
-    // Ajouter UserCompetence à la liste userCompetences de l'utilisateur
+// Iterate over each competence in the list
+    for (Competence c : lsc) {
+      // Check if the technologies in the competence match those in the signUpRequest
+      if (c.getTechnologies().equals(signUpRequest.getCompetence())) {
+        // If a matching competence is found, set the flag and assign the competence
+        competenceExists = true;
+        existingCompetence = c;
+        break;
+      }
+    }
 
-    user.setUserCompetences(userCompetence);
-    usercomprrpo.save(userCompetence);
+// If a matching competence is found, assign it to the user competence
+    if (competenceExists) {
+      System.out.println("Competence exists");
+      // Assuming you have appropriate logic to set user and level
+      UserCompetence userCompetence = new UserCompetence();
+      userCompetence.setUser(user);
+      userCompetence.setCompetence(existingCompetence);
+      userCompetence.setLvl(signUpRequest.getLvl());
+      user.setUserCompetences(userCompetence);
+      usercomprrpo.save(userCompetence);
+    } else {
+      // If no matching competence is found, create a new competence and assign it
+      Competence newCompetence = new Competence();
+      newCompetence.setTechnologies(signUpRequest.getCompetence());
+      comprrpo.save(newCompetence);
+
+      UserCompetence userCompetence = new UserCompetence();
+      userCompetence.setUser(user);
+      userCompetence.setCompetence(newCompetence);
+      userCompetence.setLvl(signUpRequest.getLvl());
+      user.setUserCompetences(userCompetence);
+      usercomprrpo.save(userCompetence);
+    }
+
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }

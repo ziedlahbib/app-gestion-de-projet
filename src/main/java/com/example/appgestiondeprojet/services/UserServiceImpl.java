@@ -26,7 +26,8 @@ public class UserServiceImpl implements IUserservice {
     UserCompetenceReposirory usercomprrpo;
     @Autowired
     CompetenceRepository comprrpo;
-
+    @Autowired
+    UserCompetenceReposirory usercomprepo;
     @Override
     public User resetpassword(User user) {
         return userRepo.save(user);
@@ -135,7 +136,13 @@ public class UserServiceImpl implements IUserservice {
             tacherepo.findByUserId(idUser).forEach(tache -> {
                 tache.setUser(null);
                 tacherepo.save(tache);});
-                userRepo.deleteById(idUser);
+
+            UserCompetence c= usercomprepo.findByUserId(idUser);
+            c.setCompetence(null);
+            c.setUser(null);
+            System.out.println("id"+c.getId());
+            usercomprepo.deleteById(c.getId());
+            userRepo.deleteById(idUser);
             return ResponseEntity.ok(new MessageResponse("Utilisateur supprimé avec succès"));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utilisateur non trouvé");
