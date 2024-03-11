@@ -21,8 +21,8 @@ public class Competence implements Serializable {
     private Long id;
 
 
-    @Enumerated(EnumType.STRING)
-    Technologies technologies;
+
+    String technologies;
 
     @OneToMany(mappedBy = "competence")
     @JsonIgnore
