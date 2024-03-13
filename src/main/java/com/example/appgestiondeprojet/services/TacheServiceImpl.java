@@ -35,6 +35,12 @@ public class TacheServiceImpl implements ITacheservice{
     }
 
     @Override
+    public List<Tache> affich_tach_by_project(Long idproj) {
+        Projet p =projetrepo.findById(idproj).orElse(null);
+        return p.getTaches();
+    }
+
+    @Override
     public List<Tache> affich_taches() {
         return tacherepo.findAll();
     }

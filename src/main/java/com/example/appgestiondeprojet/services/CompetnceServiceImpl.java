@@ -25,7 +25,7 @@ public class CompetnceServiceImpl implements ICompetenceService {
         Competence c = comprepo.findById(idcomp).orElse(null);
         if (c!=null) {
             comprepo.deleteById(idcomp);
-            return ResponseEntity.ok(new MessageResponse("Projet supprimé avec succès"));
+            return ResponseEntity.ok(new MessageResponse("competence supprimé avec succès"));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Projet non trouvé");
 

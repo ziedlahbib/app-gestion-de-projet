@@ -9,6 +9,7 @@ import java.util.List;
 public interface ITacheservice {
     public Tache ajout_tache(Tache tache );
     public Tache affich_tache(Long idtache);
+    public List<Tache> affich_tach_by_project(Long idproj);
     public List<Tache> affich_taches();
     public Tache update_tache(Tache tache,Long idtache);
     public ResponseEntity<String> delete_tache(Long idtache);

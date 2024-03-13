@@ -24,7 +24,7 @@ public class Competence implements Serializable {
 
     String technologies;
 
-    @OneToMany(mappedBy = "competence")
+    @OneToMany(mappedBy = "competence",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<UserCompetence> userCompetences;
 }

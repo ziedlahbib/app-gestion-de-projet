@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface UserCompetenceReposirory extends JpaRepository<UserCompetence, Long> {
     UserCompetence findByUserId(Long userid);
+    UserCompetence findByUserIdAndCompetenceId(Long userid,Long compid);
 }

@@ -185,4 +185,13 @@ public class UserServiceImpl implements IUserservice {
             return user;
 
     }
+
+    @Override
+    public User desaffecter_userCompetence( Long idUser, Long idComp) {
+        User user =userRepo.findById(idUser).orElse(null);
+        Competence c =comprrpo.findById(idComp).orElse(null);
+        UserCompetence userCompetence = usercomprepo.findByUserIdAndCompetenceId(user.getId(),c.getId());
+        usercomprepo.deleteById(userCompetence.getId());
+        return user;
+    }
 }

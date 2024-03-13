@@ -30,6 +30,12 @@ public class TacheController {
         return tacheserv.affich_tache(idtache);
 
     }
+    @GetMapping("/get-tache/{id-proj}")
+    @ResponseBody
+    public List<Tache> affichtachbypojet(@PathVariable("id-proj") Long idproj) {
+        return tacheserv.affich_tach_by_project(idproj);
+
+    }
     @GetMapping("/get-taches")
     @ResponseBody
     public List<Tache> gettaches() {

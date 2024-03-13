@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,5 +28,5 @@ public class Projet implements Serializable {
     @ManyToOne(fetch =FetchType.LAZY)
     private User chefDeProjet;
     @OneToMany(fetch =FetchType.LAZY,cascade = CascadeType.ALL)
-    private Set<Tache> taches;
+    private List<Tache> taches;
 }
