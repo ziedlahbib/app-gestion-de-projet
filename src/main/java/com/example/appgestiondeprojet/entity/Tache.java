@@ -1,6 +1,7 @@
 package com.example.appgestiondeprojet.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,4 +39,6 @@ public class Tache implements Serializable {
     private Date date_debut;
     @Temporal(TemporalType.DATE)
     private Date date_fin;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Competence> competences;
 }

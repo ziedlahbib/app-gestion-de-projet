@@ -1,10 +1,7 @@
 package com.example.appgestiondeprojet.services;
 
 import com.example.appgestiondeprojet.entity.*;
-import com.example.appgestiondeprojet.repository.ProjetRepository;
-import com.example.appgestiondeprojet.repository.TAcheRepository;
-import com.example.appgestiondeprojet.repository.UserRepository;
-import com.example.appgestiondeprojet.repository.UserTacheRepository;
+import com.example.appgestiondeprojet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +21,8 @@ public class TacheServiceImpl implements ITacheservice{
     ProjetRepository projetrepo;
     @Autowired
     UserTacheRepository usertacherepo;
+    @Autowired
+    CompetenceRepository comprrpo;
     @Override
     public Tache ajout_tache(Tache tache) {
         return tacherepo.save(tache);
@@ -120,5 +119,25 @@ public class TacheServiceImpl implements ITacheservice{
         u.setRating(averageRating);
         userrepo.save(u);
         return userTache;
+    }
+
+    @Override
+    public void affecter_tacheCompetence(Long idtache, Long idComp) {
+        Tache t=tacherepo.findById(idtache).orElse(null);
+        Competence c =comprrpo.findById(idComp).orElse(null);
+        if (t != null) {
+            t.getCompetences().add(c);
+            tacherepo.save(t);
+        }
+    }
+
+    @Override
+    public void desaffecter_tacheCompetence(Long idtache, Long idComp) {
+        Tache t=tacherepo.findById(idtache).orElse(null);
+        Competence c =comprrpo.findById(idComp).orElse(null);
+        if (t != null) {
+            t.getCompetences().remove(c);
+            tacherepo.save(t);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.appgestiondeprojet.services;
 
 import com.example.appgestiondeprojet.entity.Tache;
+import com.example.appgestiondeprojet.entity.User;
+import com.example.appgestiondeprojet.entity.UserCompetence;
 import com.example.appgestiondeprojet.entity.UserTache;
 import org.springframework.http.ResponseEntity;
 
@@ -17,4 +19,6 @@ public interface ITacheservice {
 
     public Tache affecter_tache_projet(Long idtache,Long idprojet);
     public UserTache rate_user_tache(UserTache usertache, Long iduser, Long idTache);
+    public void affecter_tacheCompetence ( Long idtache, Long idComp);
+    public void desaffecter_tacheCompetence ( Long idtache, Long idComp);
 }

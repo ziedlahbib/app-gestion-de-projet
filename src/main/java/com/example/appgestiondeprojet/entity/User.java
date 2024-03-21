@@ -48,6 +48,7 @@ public class User  implements Serializable {
     private Set<Tache> taches;
     @OneToMany(mappedBy = "user")
     private List<UserCompetence> userCompetences ;
+
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;

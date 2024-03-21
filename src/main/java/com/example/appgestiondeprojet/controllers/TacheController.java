@@ -1,9 +1,6 @@
 package com.example.appgestiondeprojet.controllers;
 
-import com.example.appgestiondeprojet.entity.Tache;
-import com.example.appgestiondeprojet.entity.User;
-import com.example.appgestiondeprojet.entity.UserTache;
-import com.example.appgestiondeprojet.entity.UserTacheId;
+import com.example.appgestiondeprojet.entity.*;
 import com.example.appgestiondeprojet.payload.request.SignupRequest;
 import com.example.appgestiondeprojet.services.TacheServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,5 +68,17 @@ public class TacheController {
     public UserTache rateusertache(@RequestBody UserTache usertache, @PathVariable("id-user") Long iduser,@PathVariable("id-tache") Long idtache) {
         return tacheserv.rate_user_tache(usertache,iduser,idtache);
 
+    }
+    @PutMapping("/affecter-tache-compenence/{id-tache}/{id-comp}")
+    @ResponseBody
+    public void affecter_user_competence( @PathVariable("id-tache") Long idtache, @PathVariable("id-comp") Long idcomp) {
+         tacheserv.affecter_tacheCompetence( idtache, idcomp);
+
+    }
+
+    @PutMapping("/desaffecter-tache-compenence/{id-tache}/{id-comp}")
+    @ResponseBody
+    public void desaffecter_user_competence(@PathVariable("id-tache") Long idtache, @PathVariable("id-comp") Long idcomp) {
+         tacheserv.desaffecter_tacheCompetence(idtache, idcomp);
     }
 }
