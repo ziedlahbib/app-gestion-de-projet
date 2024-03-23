@@ -14,7 +14,7 @@ public interface ITacheservice {
     public List<Tache> affich_tach_by_project(Long idproj);
     public List<Tache> affich_taches();
     public Tache update_tache(Tache tache,Long idtache);
-    public ResponseEntity<String> delete_tache(Long idtache);
+    public ResponseEntity<?> delete_tache(Long idtache);
     public UserTache affecter_tache_dev(Long iduser,Long idtache);
 
     public Tache affecter_tache_projet(Long idtache,Long idprojet);

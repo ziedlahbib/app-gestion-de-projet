@@ -1,6 +1,7 @@
 package com.example.appgestiondeprojet.services;
 
 import com.example.appgestiondeprojet.entity.*;
+import com.example.appgestiondeprojet.payload.response.MessageResponse;
 import com.example.appgestiondeprojet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,18 +56,38 @@ public class TacheServiceImpl implements ITacheservice{
     }
 
     @Override
-    public ResponseEntity<String> delete_tache(Long idtache) {
-
-
+    public ResponseEntity<?> delete_tache(Long idtache) {
         Tache tache = tacherepo.findById(idtache).orElse(null);
-        if (tache!=null) {
+        if (tache != null) {
             tache.setUser(null);
+
+            // Create an iterator to safely remove elements
+            Iterator<Competence> iterator = tache.getCompetences().iterator();
+            while (iterator.hasNext()) {
+                Competence c = iterator.next();
+                System.out.println("cid" + c.getId());
+                iterator.remove(); // Remove the element using iterator
+            }
+
+            Projet p = projetrepo.getProjectByTacheId(idtache);
+            Iterator<Tache> iteratort = p.getTaches().iterator();
+            while (iteratort.hasNext()) {
+                Tache t = iteratort.next();
+                if (t.getId() == idtache) {
+                    iteratort.remove(); // Remove the element using iterator
+                    projetrepo.save(p);
+                    break; // Exit the loop since the element is removed
+                }
+            }
+
+
             tacherepo.deleteById(idtache);
-            return ResponseEntity.ok("Tache supprimé avec succès");
+            return ResponseEntity.ok(new MessageResponse("tache supprimé avec succès"));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tache non trouvé");
         }
     }
+
 
     @Override
     public UserTache affecter_tache_dev(Long iduser, Long idtache) {

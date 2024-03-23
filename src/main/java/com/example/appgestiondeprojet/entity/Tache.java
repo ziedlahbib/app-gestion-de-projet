@@ -39,6 +39,6 @@ public class Tache implements Serializable {
     private Date date_debut;
     @Temporal(TemporalType.DATE)
     private Date date_fin;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     private List<Competence> competences;
 }

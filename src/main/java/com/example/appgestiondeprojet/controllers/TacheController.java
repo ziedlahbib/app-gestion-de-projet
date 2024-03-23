@@ -27,7 +27,7 @@ public class TacheController {
         return tacheserv.affich_tache(idtache);
 
     }
-    @GetMapping("/get-tache/{id-proj}")
+    @GetMapping("/get-tache-byprojet/{id-proj}")
     @ResponseBody
     public List<Tache> affichtachbypojet(@PathVariable("id-proj") Long idproj) {
         return tacheserv.affich_tach_by_project(idproj);
@@ -47,7 +47,7 @@ public class TacheController {
     }
     @DeleteMapping("/delete-tache/{id-tache}")
     @ResponseBody
-    public ResponseEntity<String> deletetache(@PathVariable("id-tache") Long idtache) {
+    public ResponseEntity<?> deletetache(@PathVariable("id-tache") Long idtache) {
         return tacheserv.delete_tache(idtache);
 
     }
