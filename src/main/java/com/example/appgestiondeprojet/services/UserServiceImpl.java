@@ -110,10 +110,13 @@ public class UserServiceImpl implements IUserservice {
                 tacherepo.save(tache);});
 
             UserCompetence c= usercomprepo.findByUserId(idUser);
-            c.setCompetence(null);
-            c.setUser(null);
-            System.out.println("id"+c.getId());
-            usercomprepo.deleteById(c.getId());
+            if(c!=null){
+                c.setCompetence(null);
+                c.setUser(null);
+                System.out.println("id"+c.getId());
+                usercomprepo.deleteById(c.getId());
+            }
+
             userRepo.deleteById(idUser);
             return ResponseEntity.ok(new MessageResponse("Utilisateur supprimé avec succès"));
         } else {
