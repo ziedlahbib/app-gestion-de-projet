@@ -67,6 +67,12 @@ public class UserController {
         return userServ.affichUser();
 
     }
+    @GetMapping("/get-cdp")
+    @ResponseBody
+    public List<User> getcdp() {
+        return userServ.affichcdp();
+
+    }
 
     @PutMapping("/activer-user/{id-user}")
     @ResponseBody

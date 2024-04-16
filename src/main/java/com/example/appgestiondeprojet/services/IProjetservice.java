@@ -14,4 +14,5 @@ public interface IProjetservice {
     public Projet update_projet(Projet projet,Long idprojet);
     public ResponseEntity<?> delete_projet(Long idprojet);
     public Projet affecter_projet_cdp(Long iduser,Long idprojet);
+    public List<Projet> getprojectsbydevloppeur(Long iduser);
 }

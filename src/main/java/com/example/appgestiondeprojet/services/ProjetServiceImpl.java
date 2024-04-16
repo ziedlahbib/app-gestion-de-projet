@@ -1,6 +1,7 @@
 package com.example.appgestiondeprojet.services;
 
 import com.example.appgestiondeprojet.entity.Projet;
+import com.example.appgestiondeprojet.entity.Tache;
 import com.example.appgestiondeprojet.entity.User;
 import com.example.appgestiondeprojet.payload.response.MessageResponse;
 import com.example.appgestiondeprojet.repository.ProjetRepository;
@@ -10,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ProjetServiceImpl implements  IProjetservice {
@@ -66,5 +69,18 @@ public class ProjetServiceImpl implements  IProjetservice {
         Projet p =projetrepo.findById(idprojet).orElse(null);
         p.setChefDeProjet(u);
         return projetrepo.save(p);
+    }
+
+    @Override
+    public List<Projet> getprojectsbydevloppeur(Long iduser) {
+        User u =userrepo.findById(iduser).orElse(null);
+        List<Projet> lp =new ArrayList<>();
+        if(u!=null){
+            Set<Tache> lds =u.getTaches();
+            for(Tache t:lds){
+                lp.add(projetrepo.getProjectByTacheId(t.getId()));
+            }
+        }
+        return lp;
     }
 }

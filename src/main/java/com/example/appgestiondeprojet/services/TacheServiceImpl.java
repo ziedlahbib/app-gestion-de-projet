@@ -108,6 +108,11 @@ public class TacheServiceImpl implements ITacheservice{
     }
 
     @Override
+    public Tache desaffecter_tache_dev(Long idtache, Long iduser) {
+        return null;
+    }
+
+    @Override
     public Tache affecter_tache_projet(Long idtache, Long idprojet) {
         Tache t=tacherepo.findById(idtache).orElse(null);
         Projet p =projetrepo.findById(idprojet).orElse(null);
@@ -117,7 +122,7 @@ public class TacheServiceImpl implements ITacheservice{
     }
 
     @Override
-    public UserTache rate_user_tache(UserTache ut,Long iduser, Long idTache) {
+    public UserTache rate_user_tache(double ut,Long iduser, Long idTache) {
         // Find the user and tache entities
         User u = userrepo.findById(iduser).orElse(null);
         List<UserTache> lut=new ArrayList<>();
@@ -125,7 +130,7 @@ public class TacheServiceImpl implements ITacheservice{
         // Find the UserTache entity based on the composite key
         UserTacheId userTacheId = new UserTacheId(iduser, idTache);
         UserTache userTache = usertacherepo.findById(userTacheId).orElse(null);
-        userTache.setRating(ut.getRating());
+        userTache.setRating(ut);
         usertacherepo.save(userTache);
         for(Tache t:u.getTaches()){
             UserTacheId userTId = new UserTacheId(u.getId(), t.getId());
@@ -142,7 +147,12 @@ public class TacheServiceImpl implements ITacheservice{
         userrepo.save(u);
         return userTache;
     }
-
+    @Override
+    public double rate_use_tache_number(Long iduser, Long idTache) {
+        UserTacheId userTacheId = new UserTacheId(iduser, idTache);
+        UserTache userTache = usertacherepo.findById(userTacheId).orElse(null);
+        return userTache.getRating();
+    }
     @Override
     public void affecter_tacheCompetence(Long idtache, Long idComp) {
         Tache t=tacherepo.findById(idtache).orElse(null);

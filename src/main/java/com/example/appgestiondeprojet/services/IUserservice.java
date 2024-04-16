@@ -31,4 +31,5 @@ public interface IUserservice {
 	public void desactiver(Long iduser);
 	public User affecter_userCompetence (UserCompetence userc, Long idUser, Long idComp);
 	public User desaffecter_userCompetence ( Long idUser, Long idComp);
+	public List<User> affichcdp();
 }

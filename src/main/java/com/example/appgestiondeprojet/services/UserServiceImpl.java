@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -196,5 +197,16 @@ public class UserServiceImpl implements IUserservice {
         UserCompetence userCompetence = usercomprepo.findByUserIdAndCompetenceId(user.getId(),c.getId());
         usercomprepo.deleteById(userCompetence.getId());
         return user;
+    }
+
+    @Override
+    public List<User> affichcdp() {
+        List<User> lcdp =new ArrayList<User>();
+        for(User u :this.affichUser()){
+            if(u.getRoles().getName().equals(ERole.ROLE_CHEF_DE_PROJET)){
+                lcdp.add(u);
+            }
+        }
+        return lcdp;
     }
 }

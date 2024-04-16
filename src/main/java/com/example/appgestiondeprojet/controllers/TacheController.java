@@ -65,8 +65,14 @@ public class TacheController {
     }
     @PutMapping("/rate-user-tache/{id-tache}/{id-user}")
     @ResponseBody
-    public UserTache rateusertache(@RequestBody UserTache usertache, @PathVariable("id-user") Long iduser,@PathVariable("id-tache") Long idtache) {
-        return tacheserv.rate_user_tache(usertache,iduser,idtache);
+    public UserTache rateusertache(@RequestBody double rating, @PathVariable("id-user") Long iduser,@PathVariable("id-tache") Long idtache) {
+        return tacheserv.rate_user_tache(rating,iduser,idtache);
+
+    }
+    @GetMapping("/rate-user-tache-number/{id-tache}/{id-user}")
+    @ResponseBody
+    public double rateusertachenumber( @PathVariable("id-user") Long iduser,@PathVariable("id-tache") Long idtache) {
+        return tacheserv.rate_use_tache_number(iduser,idtache);
 
     }
     @PutMapping("/affecter-tache-compenence/{id-tache}/{id-comp}")

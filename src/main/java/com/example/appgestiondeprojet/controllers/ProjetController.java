@@ -41,8 +41,14 @@ public class ProjetController {
     }
     @GetMapping("/get-projet-buuser/{id-user}")
     @ResponseBody
-    public List<Projet> upadateprojet( @PathVariable("id-user") Long iduser) {
+    public List<Projet> affichprojetbycdp( @PathVariable("id-user") Long iduser) {
         return projetserv.affich_projets_byUser( iduser);
+
+    }
+    @GetMapping("/get-projet-bydevloppeur/{id-user}")
+    @ResponseBody
+    public List<Projet> affichprojetsbydeloppey( @PathVariable("id-user") Long iduser) {
+        return projetserv.getprojectsbydevloppeur( iduser);
 
     }
     @DeleteMapping("/delete-projet/{id-projet}")
@@ -53,7 +59,7 @@ public class ProjetController {
     }
     @PutMapping("/affecter-projet-cdp/{id-user}/{id-projet}")
     @ResponseBody
-    public Projet affectertacheprojet(@PathVariable("id-user") Long iduser,@PathVariable("id-projet") Long idprojet) {
+    public Projet affecterprojetcdp(@PathVariable("id-user") Long iduser,@PathVariable("id-projet") Long idprojet) {
         return projetserv.affecter_projet_cdp(iduser, idprojet);
 
     }
