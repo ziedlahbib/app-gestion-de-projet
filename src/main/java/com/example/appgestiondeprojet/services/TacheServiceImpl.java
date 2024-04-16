@@ -91,8 +91,16 @@ public class TacheServiceImpl implements ITacheservice{
 
     @Override
     public UserTache affecter_tache_dev(Long iduser, Long idtache) {
-        User u =userrepo.findById(iduser).orElse(null);
-        Tache t=tacherepo.findById(idtache).orElse(null);
+        User u = userrepo.findById(iduser).orElse(null);
+        Tache t = tacherepo.findById(idtache).orElse(null);
+
+        // Check if the association already exists
+        UserTache existingUserTache = usertacherepo.findById(new UserTacheId(u.getId(), t.getId())).orElse(null);
+        if (existingUserTache != null) {
+            // Association already exists, return the existing entry
+            return existingUserTache;
+        }
+
         // Create an instance of UserTache
         UserTacheId userTacheId = new UserTacheId();
 
@@ -103,14 +111,16 @@ public class TacheServiceImpl implements ITacheservice{
         // Create an instance of UserTache with the composite primary key
         UserTache userTache = new UserTache();
         userTache.setId(userTacheId);
-        return usertacherepo.save(userTache);
 
+        // Save the new association
+        return usertacherepo.save(userTache);
     }
 
     @Override
     public Tache desaffecter_tache_dev(Long idtache, Long iduser) {
         return null;
     }
+
 
     @Override
     public Tache affecter_tache_projet(Long idtache, Long idprojet) {
@@ -150,9 +160,18 @@ public class TacheServiceImpl implements ITacheservice{
     @Override
     public double rate_use_tache_number(Long iduser, Long idTache) {
         UserTacheId userTacheId = new UserTacheId(iduser, idTache);
+        System.out.println("UserTacheId: " + userTacheId.toString());
+
         UserTache userTache = usertacherepo.findById(userTacheId).orElse(null);
-        return userTache.getRating();
+        if (userTache != null) {
+            System.out.println("Rating found: " + userTache.getRating());
+            return userTache.getRating();
+        } else {
+            System.out.println("No rating found for UserTacheId: " + userTacheId.toString());
+            return 0;
+        }
     }
+
     @Override
     public void affecter_tacheCompetence(Long idtache, Long idComp) {
         Tache t=tacherepo.findById(idtache).orElse(null);

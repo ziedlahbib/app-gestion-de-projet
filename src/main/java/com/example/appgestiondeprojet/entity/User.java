@@ -44,7 +44,7 @@ public class User  implements Serializable {
     private Role roles ;
 //    @OneToMany(fetch =FetchType.LAZY,mappedBy="chefDeProjet")
 //    private Set<Projet> projets;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Tache> taches;
     @OneToMany(mappedBy = "user")
     private List<UserCompetence> userCompetences ;

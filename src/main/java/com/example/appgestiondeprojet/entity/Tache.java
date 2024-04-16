@@ -30,11 +30,12 @@ public class Tache implements Serializable {
     @Column(name = "Technologies", nullable = false)
     @Enumerated(EnumType.STRING)
     Collection<Technologies> technologies;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinTable(name = "user_tache",
             joinColumns = @JoinColumn(name = "tache_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private User user;
+    private List<User> user;
     @Temporal(TemporalType.DATE)
     private Date date_debut;
     @Temporal(TemporalType.DATE)

@@ -107,7 +107,7 @@ public class UserServiceImpl implements IUserservice {
                 project.setChefDeProjet(null);
                 projectRepository.save(project);});
             tacherepo.findByUserId(idUser).forEach(tache -> {
-                tache.setUser(null);
+                tache.getUser().remove(u);
                 tacherepo.save(tache);});
 
             UserCompetence c= usercomprepo.findByUserId(idUser);
