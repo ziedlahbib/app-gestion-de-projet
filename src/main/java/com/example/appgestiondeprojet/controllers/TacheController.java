@@ -57,6 +57,12 @@ public class TacheController {
         return tacheserv.affecter_tache_dev(iduser, idtache);
 
     }
+    @PutMapping("/desaffecter-tache-dev/{id-user}/{id-tache}")
+    @ResponseBody
+    public Tache desaffectertachedev(@PathVariable("id-user") Long iduser, @PathVariable("id-tache") Long idtache) {
+        return tacheserv.desaffecter_tache_dev(idtache, iduser);
+
+    }
     @PutMapping("/affecter-tache-projet/{id-projet}/{id-tache}")
     @ResponseBody
     public Tache affectertacheprojet(@PathVariable("id-projet") Long idprojet,@PathVariable("id-tache") Long idtache) {
@@ -86,5 +92,11 @@ public class TacheController {
     @ResponseBody
     public void desaffecter_user_competence(@PathVariable("id-tache") Long idtache, @PathVariable("id-comp") Long idcomp) {
          tacheserv.desaffecter_tacheCompetence(idtache, idcomp);
+    }
+    @GetMapping("/get-users-by-tache/{id-tache}")
+    @ResponseBody
+    public List<User> getuserbyid(@PathVariable("id-tache") Long idtache) {
+        return tacheserv.getuserdetache(idtache);
+
     }
 }

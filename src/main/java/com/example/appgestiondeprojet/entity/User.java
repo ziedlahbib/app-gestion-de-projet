@@ -35,6 +35,7 @@ public class User  implements Serializable {
     private String password;
     private String resetToken;
     private Boolean active;
+    private String status;
     private double rating;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -46,7 +46,9 @@ public class ProjetServiceImpl implements  IProjetservice {
     public Projet update_projet(Projet projet, Long idprojet) {
         Projet p =projetrepo.findById(idprojet).orElse(null);
         p.setNom_projet(projet.getNom_projet());
-        p.setDate_limite(projet.getDate_limite());
+        p.setStartDate(projet.getStartDate());
+        p.setEndDate(projet.getEndDate());
+        p.setColor(projet.getColor());
         return projetrepo.save(p);
     }
 

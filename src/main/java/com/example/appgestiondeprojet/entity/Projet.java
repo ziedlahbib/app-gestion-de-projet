@@ -23,8 +23,11 @@ public class Projet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom_projet;
+    private String color;
     @Temporal(TemporalType.DATE)
-    private Date date_limite;
+    private Date startDate;
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
     @ManyToOne(fetch =FetchType.LAZY)
     private User chefDeProjet;
     @OneToMany(fetch =FetchType.LAZY,cascade = CascadeType.ALL)

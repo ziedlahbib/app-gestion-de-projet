@@ -19,8 +19,10 @@ public interface ITacheservice {
     public Tache desaffecter_tache_dev( Long idtache,Long iduser);
 
     public Tache affecter_tache_projet(Long idtache,Long idprojet);
+    public Tache desaffecter_tache_projet(Long idtache,Long idprojet);
     public UserTache rate_user_tache(double note, Long iduser, Long idTache);
     public double rate_use_tache_number(Long iduser, Long idTache);
     public void affecter_tacheCompetence ( Long idtache, Long idComp);
     public void desaffecter_tacheCompetence ( Long idtache, Long idComp);
+    List<User> getuserdetache(Long idtache);
 }

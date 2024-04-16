@@ -17,4 +17,5 @@ public interface ProjetRepository extends JpaRepository<Projet, Long> {
             "JOIN projet_taches pt ON p.id = pt.projet_id " +
             "WHERE pt.taches_id = :idtache", nativeQuery = true)
     Projet getProjectByTacheId(@Param("idtache") Long idtache);
+
 }

@@ -111,14 +111,24 @@ public class TacheServiceImpl implements ITacheservice{
         // Create an instance of UserTache with the composite primary key
         UserTache userTache = new UserTache();
         userTache.setId(userTacheId);
-
+        u.setStatus("non disponible");
         // Save the new association
         return usertacherepo.save(userTache);
     }
 
     @Override
     public Tache desaffecter_tache_dev(Long idtache, Long iduser) {
-        return null;
+        User u = userrepo.findById(iduser).orElse(null);
+        Tache t = tacherepo.findById(idtache).orElse(null);
+        if(t.getUser()!=null){
+
+            // Check if the association already exists
+            UserTache existingUserTache = usertacherepo.findById(new UserTacheId(u.getId(), t.getId())).orElse(null);
+            u.setStatus("disponible");
+            usertacherepo.deleteById(existingUserTache.getId());
+
+        }
+        return t;
     }
 
 
@@ -129,6 +139,11 @@ public class TacheServiceImpl implements ITacheservice{
         p.getTaches().add(t);
         return tacherepo.save(t);
 
+    }
+
+    @Override
+    public Tache desaffecter_tache_projet(Long idtache, Long idprojet) {
+        return null;
     }
 
     @Override
@@ -190,5 +205,10 @@ public class TacheServiceImpl implements ITacheservice{
             t.getCompetences().remove(c);
             tacherepo.save(t);
         }
+    }
+
+    @Override
+    public List<User> getuserdetache(Long idtache) {
+        return tacherepo.userdetache(idtache);
     }
 }

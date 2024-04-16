@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 @Table(name = "user_tache")
@@ -19,4 +20,5 @@ public class UserTache {
     @EmbeddedId
     private UserTacheId id;
     private double rating;
+
 }
