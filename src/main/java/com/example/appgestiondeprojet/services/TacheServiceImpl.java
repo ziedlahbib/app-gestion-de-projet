@@ -111,6 +111,7 @@ public class TacheServiceImpl implements ITacheservice{
         // Create an instance of UserTache with the composite primary key
         UserTache userTache = new UserTache();
         userTache.setId(userTacheId);
+        userTache.setStatus("en cours");
         u.setStatus("non disponible");
         // Save the new association
         return usertacherepo.save(userTache);
@@ -124,9 +125,9 @@ public class TacheServiceImpl implements ITacheservice{
 
             // Check if the association already exists
             UserTache existingUserTache = usertacherepo.findById(new UserTacheId(u.getId(), t.getId())).orElse(null);
+            existingUserTache.setStatus("terminer");
             u.setStatus("disponible");
-            usertacherepo.deleteById(existingUserTache.getId());
-
+            usertacherepo.save(existingUserTache);
         }
         return t;
     }

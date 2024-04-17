@@ -14,6 +14,11 @@ import java.util.List;
 public interface TAcheRepository extends JpaRepository<Tache, Long> {
     List<Tache> findByUserId(Long userId);
 
-    @Query("SELECT u FROM User u JOIN u.taches t WHERE t.id = :tacheId ")
-    List<User> userdetache(@Param("tacheId") Long tacheid);
+//    @Query("SELECT u FROM User u JOIN u.taches t WHERE t.id = :tacheId  ")
+//    List<User> userdetache(@Param("tacheId") Long tacheid);
+@Query("SELECT u FROM User u JOIN u.taches t JOIN UserTache ut ON u.id = ut.id.userId " +
+        "WHERE t.id = :tacheId AND ut.status = 'en cours'")
+List<User> userdetache(@Param("tacheId") Long tacheId);
+
+
 }

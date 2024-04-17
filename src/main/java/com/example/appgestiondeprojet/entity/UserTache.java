@@ -20,5 +20,6 @@ public class UserTache {
     @EmbeddedId
     private UserTacheId id;
     private double rating;
+    private String status;
 
 }
