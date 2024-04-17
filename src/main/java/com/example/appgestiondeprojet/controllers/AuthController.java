@@ -113,6 +113,7 @@ public class AuthController {
 
           break;
         case "developpeur":
+          user.setStatus("disponible");
           Role ROLE_DEVELOPPEUR = roleRepository.findByName(ERole.ROLE_DEVELOPPEUR)
                   .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           user.setRoles(ROLE_DEVELOPPEUR);
