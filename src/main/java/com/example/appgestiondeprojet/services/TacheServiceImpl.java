@@ -148,30 +148,45 @@ public class TacheServiceImpl implements ITacheservice{
     }
 
     @Override
-    public UserTache rate_user_tache(double ut,Long iduser, Long idTache) {
-        // Find the user and tache entities
-        User u = userrepo.findById(iduser).orElse(null);
-        List<UserTache> lut=new ArrayList<>();
-        System.out.println(""+lut.size());
+    public UserTache rate_user_tache(double newRating,Long idUser, Long idTache) {
         // Find the UserTache entity based on the composite key
-        UserTacheId userTacheId = new UserTacheId(iduser, idTache);
+        UserTacheId userTacheId = new UserTacheId(idUser, idTache);
         UserTache userTache = usertacherepo.findById(userTacheId).orElse(null);
-        userTache.setRating(ut);
-        usertacherepo.save(userTache);
-        for(Tache t:u.getTaches()){
-            UserTacheId userTId = new UserTacheId(u.getId(), t.getId());
-            lut.add(usertacherepo.findById(userTId).orElse(null));
+
+        if (userTache != null) {
+            // Update the rating of the UserTache entity
+            userTache.setRating(newRating);
+            usertacherepo.save(userTache);
+
+            // Retrieve the User entity
+            User user = userrepo.findById(idUser).orElse(null);
+            if (user != null) {
+                List<UserTache> userTaches = new ArrayList<>();
+                double sum = 0;
+
+                // Get all UserTache entities associated with the User
+                for (Tache tache : user.getTaches()) {
+                    UserTacheId userTId = new UserTacheId(user.getId(), tache.getId());
+                    UserTache ut = usertacherepo.findById(userTId).orElse(null);
+
+                    if (ut != null) {
+                        userTaches.add(ut);
+                        sum += ut.getRating();
+                    }
+                }
+
+                // Calculate the average rating
+                double averageRating = userTaches.isEmpty() ? 0 : sum / userTaches.size();
+
+                // Update the User entity with the average rating
+                user.setRating(averageRating);
+                userrepo.save(user);
+
+                return userTache;
+            }
         }
-        double sum = 0;
-        int count = 0;
-        for (UserTache ust : lut) {
-            sum += ust.getRating();
-            count++;
-        }
-        double averageRating = sum / count;
-        u.setRating(averageRating);
-        userrepo.save(u);
-        return userTache;
+
+        return null;
     }
     @Override
     public double rate_use_tache_number(Long iduser, Long idTache) {
