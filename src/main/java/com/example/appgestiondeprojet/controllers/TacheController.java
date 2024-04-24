@@ -39,6 +39,12 @@ public class TacheController {
         return tacheserv.affich_taches();
 
     }
+    @GetMapping("/get-tachesByUserId/{id-userid}")
+    @ResponseBody
+    public List<UserTache> gettachesbyUserId(@PathVariable("id-userid") Long iduser) {
+        return tacheserv.affich_taches_byuserId(iduser);
+
+    }
     @PutMapping("/update-tache/{id-tache}")
     @ResponseBody
     public Tache upadateTache(@RequestBody Tache t, @PathVariable("id-tache") Long idtache) {
@@ -57,6 +63,12 @@ public class TacheController {
         return tacheserv.affecter_tache_dev(iduser, idtache);
 
     }
+    @PutMapping("/todo-tache-dev/{id-user}/{id-tache}")
+    @ResponseBody
+    public UserTache todotachedev(@PathVariable("id-user") Long iduser, @PathVariable("id-tache") Long idtache) {
+        return tacheserv.todo_tache_dev(iduser, idtache);
+
+    }
     @PutMapping("/desaffecter-tache-dev/{id-user}/{id-tache}")
     @ResponseBody
     public Tache desaffectertachedev(@PathVariable("id-user") Long iduser, @PathVariable("id-tache") Long idtache) {
@@ -69,6 +81,7 @@ public class TacheController {
         return tacheserv.affecter_tache_projet(idtache, idprojet);
 
     }
+
     @PutMapping("/rate-user-tache/{id-tache}/{id-user}")
     @ResponseBody
     public UserTache rateusertache(@RequestBody double rating, @PathVariable("id-user") Long iduser,@PathVariable("id-tache") Long idtache) {

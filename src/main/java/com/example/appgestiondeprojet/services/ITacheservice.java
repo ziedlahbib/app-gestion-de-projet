@@ -13,8 +13,10 @@ public interface ITacheservice {
     public Tache affich_tache(Long idtache);
     public List<Tache> affich_tach_by_project(Long idproj);
     public List<Tache> affich_taches();
+    public List<UserTache> affich_taches_byuserId(Long userId);
     public Tache update_tache(Tache tache,Long idtache);
     public ResponseEntity<?> delete_tache(Long idtache);
+    public UserTache todo_tache_dev(Long iduser,Long idtache);
     public UserTache affecter_tache_dev(Long iduser,Long idtache);
     public Tache desaffecter_tache_dev( Long idtache,Long iduser);
 

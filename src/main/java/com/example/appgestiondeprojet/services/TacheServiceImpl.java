@@ -47,6 +47,11 @@ public class TacheServiceImpl implements ITacheservice{
     }
 
     @Override
+    public List<UserTache> affich_taches_byuserId(Long userId) {
+        return usertacherepo.findAllByUserId(userId);
+    }
+
+    @Override
     public Tache update_tache(Tache tache,Long idtache) {
         Tache t=tacherepo.findById(idtache).orElse(null);
         t.setDescription(tache.getDescription());
@@ -88,6 +93,34 @@ public class TacheServiceImpl implements ITacheservice{
         }
     }
 
+    @Override
+    public UserTache todo_tache_dev(Long iduser, Long idtache) {
+        User u = userrepo.findById(iduser).orElse(null);
+        Tache t = tacherepo.findById(idtache).orElse(null);
+
+        // Check if the association already exists
+        UserTache existingUserTache = usertacherepo.findById(new UserTacheId(u.getId(), t.getId())).orElse(null);
+        if (existingUserTache != null) {
+            // Association already exists, return the existing entry
+            existingUserTache.setStatus("à faire");
+            return existingUserTache;
+        }
+
+        // Create an instance of UserTache
+        UserTacheId userTacheId = new UserTacheId();
+
+        // Set user and tache IDs in the composite primary key
+        userTacheId.setUserId(u.getId());
+        userTacheId.setTacheId(t.getId());
+
+        // Create an instance of UserTache with the composite primary key
+        UserTache userTache = new UserTache();
+        userTache.setId(userTacheId);
+        userTache.setStatus("à faire");
+        // Save the new association
+        return usertacherepo.save(userTache);
+    }
+
 
     @Override
     public UserTache affecter_tache_dev(Long iduser, Long idtache) {
@@ -98,6 +131,7 @@ public class TacheServiceImpl implements ITacheservice{
         UserTache existingUserTache = usertacherepo.findById(new UserTacheId(u.getId(), t.getId())).orElse(null);
         if (existingUserTache != null) {
             // Association already exists, return the existing entry
+            existingUserTache.setStatus("en cours");
             return existingUserTache;
         }
 
