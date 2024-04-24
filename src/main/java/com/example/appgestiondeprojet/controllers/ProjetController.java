@@ -27,6 +27,12 @@ public class ProjetController {
         return projetserv.affich_projet(idprojet);
 
     }
+    @GetMapping("/get-projet-by-tacheid/{id-tache}")
+    @ResponseBody
+    public Projet affich_projets_bytache(@PathVariable("id-tache") Long idtache) {
+        return projetserv.affich_projets_bytache(idtache);
+
+    }
     @GetMapping("/get-projets")
     @ResponseBody
     public List<Projet> getprojetbyid() {

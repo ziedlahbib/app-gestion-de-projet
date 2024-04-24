@@ -5,6 +5,7 @@ import com.example.appgestiondeprojet.entity.Tache;
 import com.example.appgestiondeprojet.entity.User;
 import com.example.appgestiondeprojet.payload.response.MessageResponse;
 import com.example.appgestiondeprojet.repository.ProjetRepository;
+import com.example.appgestiondeprojet.repository.TAcheRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,8 @@ public class ProjetServiceImpl implements  IProjetservice {
     ProjetRepository projetrepo;
     @Autowired
     UserRepository userrepo;
+    @Autowired
+    TAcheRepository tacherepo;
     @Override
     public Projet ajout_projet(Projet projet) {
         return projetrepo.save(projet);
@@ -40,6 +43,11 @@ public class ProjetServiceImpl implements  IProjetservice {
     @Override
     public List<Projet> affich_projets_byUser(Long iduser) {
         return projetrepo.findBychefDeProjetId(iduser);
+    }
+
+    @Override
+    public Projet affich_projets_bytache(Long idtache) {
+        return projetrepo.getProjectByTacheId(idtache);
     }
 
     @Override
