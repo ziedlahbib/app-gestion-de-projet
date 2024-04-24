@@ -3,9 +3,11 @@ package com.example.appgestiondeprojet.controllers;
 import com.example.appgestiondeprojet.entity.*;
 import com.example.appgestiondeprojet.repository.CompetenceRepository;
 import com.example.appgestiondeprojet.repository.UserCompetenceReposirory;
+import com.example.appgestiondeprojet.services.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -47,7 +49,8 @@ public class AuthController {
   @Autowired
   PasswordEncoder encoder;
 
-
+  @Autowired
+  private EmailService emailService;
   @Autowired
   JwtUtils jwtUtils;
   @Autowired
@@ -138,6 +141,15 @@ public class AuthController {
     user.setNom(signUpRequest.getNom());
     user.setPrenom(signUpRequest.getPrenom());
     userRepository.save(user);
+    // Email message
+    SimpleMailMessage mailinscription = new SimpleMailMessage();
+    mailinscription.setFrom("support@pfe.com");
+    mailinscription.setTo(user.getEmail());
+    mailinscription.setSubject("information compte");
+    mailinscription.setText("Bienvenue\n"+"Vous avez inscrit dans notre application avec d'identifiant "+signUpRequest.getUsername() +" et mot de passe : "
+    +signUpRequest.getPassword());
+
+    emailService.sendEmail(mailinscription);
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
 
