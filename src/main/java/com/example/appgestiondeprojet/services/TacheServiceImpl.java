@@ -103,7 +103,7 @@ public class TacheServiceImpl implements ITacheservice{
         if (existingUserTache != null) {
             // Association already exists, return the existing entry
             existingUserTache.setStatus("à faire");
-            return existingUserTache;
+            return usertacherepo.save(existingUserTache);
         }
 
         // Create an instance of UserTache
@@ -132,7 +132,7 @@ public class TacheServiceImpl implements ITacheservice{
         if (existingUserTache != null) {
             // Association already exists, return the existing entry
             existingUserTache.setStatus("en cours");
-            return existingUserTache;
+            return usertacherepo.save(existingUserTache);
         }
 
         // Create an instance of UserTache
