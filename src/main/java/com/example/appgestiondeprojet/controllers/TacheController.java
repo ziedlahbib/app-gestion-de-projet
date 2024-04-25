@@ -57,6 +57,12 @@ public class TacheController {
         return tacheserv.delete_tache(idtache);
 
     }
+    @PutMapping("/voir-notif/{id-user}/{id-tache}")
+    @ResponseBody
+    public void voirnotif(@PathVariable("id-user") Long iduser, @PathVariable("id-tache") Long idtache) {
+         tacheserv.voirnotf(iduser, idtache);
+
+    }
     @PutMapping("/affecter-tache-dev/{id-user}/{id-tache}")
     @ResponseBody
     public UserTache affectertachedev(@PathVariable("id-user") Long iduser, @PathVariable("id-tache") Long idtache) {

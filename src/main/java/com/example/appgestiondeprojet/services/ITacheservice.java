@@ -16,6 +16,7 @@ public interface ITacheservice {
     public List<UserTache> affich_taches_byuserId(Long userId);
     public Tache update_tache(Tache tache,Long idtache);
     public ResponseEntity<?> delete_tache(Long idtache);
+    public void voirnotf(Long iduser,Long idtache);
     public UserTache todo_tache_dev(Long iduser,Long idtache);
     public UserTache affecter_tache_dev(Long iduser,Long idtache);
     public Tache desaffecter_tache_dev( Long idtache,Long iduser);

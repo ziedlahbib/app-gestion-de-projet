@@ -94,6 +94,19 @@ public class TacheServiceImpl implements ITacheservice{
     }
 
     @Override
+    public void voirnotf(Long iduser, Long idtache) {
+        User u = userrepo.findById(iduser).orElse(null);
+        Tache t = tacherepo.findById(idtache).orElse(null);
+
+        // Check if the association already exists
+        UserTache existingUserTache = usertacherepo.findById(new UserTacheId(u.getId(), t.getId())).orElse(null);
+
+            // Association already exists, return the existing entry
+            existingUserTache.setEtat("lu");
+            usertacherepo.save(existingUserTache);
+    }
+
+    @Override
     public UserTache todo_tache_dev(Long iduser, Long idtache) {
         User u = userrepo.findById(iduser).orElse(null);
         Tache t = tacherepo.findById(idtache).orElse(null);
@@ -103,6 +116,7 @@ public class TacheServiceImpl implements ITacheservice{
         if (existingUserTache != null) {
             // Association already exists, return the existing entry
             existingUserTache.setStatus("à faire");
+            existingUserTache.setEtat("non lu");
             return usertacherepo.save(existingUserTache);
         }
 
@@ -117,6 +131,7 @@ public class TacheServiceImpl implements ITacheservice{
         UserTache userTache = new UserTache();
         userTache.setId(userTacheId);
         userTache.setStatus("à faire");
+        userTache.setEtat("non lu");
         // Save the new association
         return usertacherepo.save(userTache);
     }
@@ -132,6 +147,7 @@ public class TacheServiceImpl implements ITacheservice{
         if (existingUserTache != null) {
             // Association already exists, return the existing entry
             existingUserTache.setStatus("en cours");
+            existingUserTache.setEtat("non lu");
             return usertacherepo.save(existingUserTache);
         }
 
@@ -146,6 +162,7 @@ public class TacheServiceImpl implements ITacheservice{
         UserTache userTache = new UserTache();
         userTache.setId(userTacheId);
         userTache.setStatus("en cours");
+        userTache.setEtat("non lu");
         u.setStatus("non disponible");
         // Save the new association
         return usertacherepo.save(userTache);

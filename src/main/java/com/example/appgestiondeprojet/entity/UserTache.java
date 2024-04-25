@@ -21,5 +21,6 @@ public class UserTache {
     private UserTacheId id;
     private double rating;
     private String status;
+    private String etat;
 
 }
