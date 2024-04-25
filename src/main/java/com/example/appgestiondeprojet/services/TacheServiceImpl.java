@@ -148,6 +148,7 @@ public class TacheServiceImpl implements ITacheservice{
             // Association already exists, return the existing entry
             existingUserTache.setStatus("en cours");
             existingUserTache.setEtat("non lu");
+            u.setStatus("non disponible");
             return usertacherepo.save(existingUserTache);
         }
 
