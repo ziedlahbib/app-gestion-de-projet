@@ -1,12 +1,11 @@
 package com.example.appgestiondeprojet.services;
 
-import com.example.appgestiondeprojet.entity.Projet;
-import com.example.appgestiondeprojet.entity.Tache;
-import com.example.appgestiondeprojet.entity.User;
+import com.example.appgestiondeprojet.entity.*;
 import com.example.appgestiondeprojet.payload.response.MessageResponse;
 import com.example.appgestiondeprojet.repository.ProjetRepository;
 import com.example.appgestiondeprojet.repository.TAcheRepository;
 import com.example.appgestiondeprojet.repository.UserRepository;
+import com.example.appgestiondeprojet.repository.UserTacheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +24,8 @@ public class ProjetServiceImpl implements  IProjetservice {
     UserRepository userrepo;
     @Autowired
     TAcheRepository tacherepo;
+    @Autowired
+    UserTacheRepository usertacherepo;
     @Override
     public Projet ajout_projet(Projet projet) {
         return projetrepo.save(projet);
@@ -88,7 +89,11 @@ public class ProjetServiceImpl implements  IProjetservice {
         if(u!=null){
             Set<Tache> lds =u.getTaches();
             for(Tache t:lds){
-                lp.add(projetrepo.getProjectByTacheId(t.getId()));
+                UserTache existingUserTache = usertacherepo.findById(new UserTacheId(u.getId(), t.getId())).orElse(null);
+                if(existingUserTache.getStatus().equalsIgnoreCase("en cours")){
+                    lp.add(projetrepo.getProjectByTacheId(t.getId()));
+                }
+
             }
         }
         return lp;
