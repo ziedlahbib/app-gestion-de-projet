@@ -195,6 +195,8 @@ public class UserServiceImpl implements IUserservice {
         User user =userRepo.findById(idUser).orElse(null);
         Competence c =comprrpo.findById(idComp).orElse(null);
         UserCompetence userCompetence = usercomprepo.findByUserIdAndCompetenceId(user.getId(),c.getId());
+        userCompetence.setUser(null);
+        userCompetence.setCompetence(null);
         usercomprepo.deleteById(userCompetence.getId());
         return user;
     }
