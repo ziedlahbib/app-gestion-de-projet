@@ -19,6 +19,9 @@ public interface TAcheRepository extends JpaRepository<Tache, Long> {
 @Query("SELECT u FROM User u JOIN u.taches t JOIN UserTache ut ON u.id = ut.id.userId " +
         "WHERE t.id = :tacheId AND ut.status = 'en cours'")
 List<User> userdetache(@Param("tacheId") Long tacheId);
+    @Query("SELECT u FROM User u JOIN u.taches t JOIN UserTache ut ON u.id = ut.id.userId " +
+            "WHERE t.id = :tacheId")
+    List<User> userdetacheall(@Param("tacheId") Long tacheId);
 
 
 }

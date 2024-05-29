@@ -118,4 +118,10 @@ public class TacheController {
         return tacheserv.getuserdetache(idtache);
 
     }
+    @GetMapping("/get-users-by-tache-all/{id-tache}")
+    @ResponseBody
+    public List<User> getuserbyidtachall(@PathVariable("id-tache") Long idtache) {
+        return tacheserv.getuserdetacheall(idtache);
+
+    }
 }

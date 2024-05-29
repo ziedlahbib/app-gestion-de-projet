@@ -28,4 +28,5 @@ public interface ITacheservice {
     public void affecter_tacheCompetence ( Long idtache, Long idComp);
     public void desaffecter_tacheCompetence ( Long idtache, Long idComp);
     List<User> getuserdetache(Long idtache);
+    List<User> getuserdetacheall(Long idtache);
 }

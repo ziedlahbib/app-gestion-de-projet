@@ -279,4 +279,8 @@ public class TacheServiceImpl implements ITacheservice{
     public List<User> getuserdetache(Long idtache) {
         return tacherepo.userdetache(idtache);
     }
+    @Override
+    public List<User> getuserdetacheall(Long idtache) {
+        return tacherepo.userdetacheall(idtache);
+    }
 }

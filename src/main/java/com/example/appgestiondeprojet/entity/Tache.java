@@ -25,11 +25,11 @@ public class Tache implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
-    @ElementCollection(targetClass = Technologies.class)
-    @JoinTable(name = "technologie", joinColumns = @JoinColumn(name = "tacheid"))
-    @Column(name = "Technologies", nullable = false)
-    @Enumerated(EnumType.STRING)
-    Collection<Technologies> technologies;
+//    @ElementCollection(targetClass = Technologies.class)
+//    @JoinTable(name = "technologie", joinColumns = @JoinColumn(name = "tacheid"))
+//    @Column(name = "Technologies", nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    Collection<Technologies> technologies;
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(name = "user_tache",
