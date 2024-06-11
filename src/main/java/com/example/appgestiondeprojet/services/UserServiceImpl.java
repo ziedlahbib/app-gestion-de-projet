@@ -180,13 +180,16 @@ public class UserServiceImpl implements IUserservice {
     public User affecter_userCompetence(UserCompetence userc,Long idUser, Long idComp) {
         User user =userRepo.findById(idUser).orElse(null);
         Competence c =comprrpo.findById(idComp).orElse(null);
-
+        UserCompetence userCompetence1 = usercomprepo.findByUserIdAndCompetenceId(user.getId(),c.getId());
+        if(userCompetence1==null){
             UserCompetence userCompetence = new UserCompetence();
             userCompetence.setUser(user);
             userCompetence.setCompetence(c);
             userCompetence.setLvl(userc.getLvl());
             usercomprepo.save(userCompetence);
-            return user;
+
+        }
+        return user;
 
     }
 
