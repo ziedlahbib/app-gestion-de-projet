@@ -78,6 +78,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers("/tache/get-taches").permitAll()
                                 .requestMatchers("/user/get-users").permitAll()
+                                .requestMatchers("/File/file/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 

@@ -32,4 +32,5 @@ public interface IUserservice {
 	public User affecter_userCompetence (UserCompetence userc, Long idUser, Long idComp);
 	public User desaffecter_userCompetence ( Long idUser, Long idComp);
 	public List<User> affichcdp();
+	public User affcterfileauuser(Long iduser, Long idfile);
 }

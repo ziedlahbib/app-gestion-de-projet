@@ -100,4 +100,10 @@ public class UserController {
     public User desaffecter_user_competence(@PathVariable("id-user") Long iduser, @PathVariable("id-comp") Long idcomp) {
         return userServ.desaffecter_userCompetence(iduser, idcomp);
     }
+    @PutMapping("/affecter-file-utilisateur/{id-user}/{id-file}")
+    @ResponseBody
+    public User affecterfileutilisateur(@PathVariable("id-user") Long iduser,@PathVariable("id-file") Long idfile) {
+        return userServ.affcterfileauuser(iduser, idfile);
+
+    }
 }

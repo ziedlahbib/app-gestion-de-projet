@@ -29,6 +29,8 @@ public class UserServiceImpl implements IUserservice {
     CompetenceRepository comprrpo;
     @Autowired
     UserCompetenceReposirory usercomprepo;
+    @Autowired
+    private FileDBRepository fileDBRepo;
     @Override
     public User resetpassword(User user) {
         return userRepo.save(user);
@@ -191,6 +193,7 @@ public class UserServiceImpl implements IUserservice {
         }
         return user;
 
+
     }
 
     @Override
@@ -213,5 +216,14 @@ public class UserServiceImpl implements IUserservice {
             }
         }
         return lcdp;
+    }
+    @Override
+    public User affcterfileauuser(Long iduser, Long idfile) {
+        // TODO Auto-generated method stub
+        User u = userRepo.findById(iduser).orElse(null);
+        FileDB f = fileDBRepo.findById(idfile).orElse(null);
+        u.setFile(f);
+        userRepo.save(u);
+        return u;
     }
 }

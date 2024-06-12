@@ -50,6 +50,8 @@ public class User  implements Serializable {
     @OneToMany(mappedBy = "user")
     private List<UserCompetence> userCompetences ;
 
+    @OneToOne
+    private FileDB file;
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
