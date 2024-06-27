@@ -17,5 +17,6 @@ public interface ProjetRepository extends JpaRepository<Projet, Long> {
             "JOIN projet_taches pt ON p.id = pt.projet_id " +
             "WHERE pt.taches_id = :idtache", nativeQuery = true)
     Projet getProjectByTacheId(@Param("idtache") Long idtache);
-
+    @Query("SELECT MONTH(p.startDate), COUNT(p) FROM Projet p WHERE YEAR(p.startDate) = :year GROUP BY MONTH(p.startDate)")
+    List<Object[]> countProjectsPerMonth(@Param("year") int year);
 }
